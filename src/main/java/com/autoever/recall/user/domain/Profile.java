@@ -10,23 +10,24 @@ import org.springframework.data.annotation.LastModifiedDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "users")
+@Table(name = "profiles")
 @Getter @Setter
 @NoArgsConstructor
-public class User {
+public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String email;
+    @OneToOne(mappedBy = "profile")
+    private User user;
 
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
+    @Column(nullable = false, length = 20)
+    private String name;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "profile_id", nullable = true)
-    private Profile profile;
+    @Column(length = 11)
+    private String phone;
+
+    private String address;
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)

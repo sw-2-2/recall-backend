@@ -28,7 +28,7 @@ public enum SchoolType {
         return Arrays.stream(SchoolType.values())
                      .filter(role -> role.getKey().equals(key))
                      .findFirst()
-                     .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 권한(SchoolType)입니다: " + key));
+                     .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 학교 유형(SchoolType)입니다: " + key));
     }
 
 }

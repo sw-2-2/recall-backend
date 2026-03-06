@@ -2,9 +2,7 @@ package com.autoever.recall.profileschool.domain;
 
 import com.autoever.recall.school.domain.School;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -13,7 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "profile_schools")
 @Getter @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 public class ProfileSchool {
     @Id
@@ -35,4 +33,12 @@ public class ProfileSchool {
     @CreatedDate
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
+
+    // ! 나중에 Profile 연관관계 주석 해제하면, 빌더 생성자 파라미터에도 추가하기
+    @Builder
+    public ProfileSchool(School school, Integer graduationYear) {
+        // this.profile = profile;
+        this.school = school;
+        this.graduationYear = graduationYear;
+    }
 }

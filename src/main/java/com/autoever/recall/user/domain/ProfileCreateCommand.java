@@ -5,4 +5,11 @@ public record ProfileCreateCommand(
         String phone,
         String address
 ) {
+    public Profile toProfile() {
+        return Profile.builder()
+                .name(name)
+                .phone(phone)
+                .address(address)
+                .build();
+    }
 }

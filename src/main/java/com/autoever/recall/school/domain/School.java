@@ -3,9 +3,7 @@ package com.autoever.recall.school.domain;
 import com.autoever.recall.profileschool.domain.ProfileSchool;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -17,7 +15,7 @@ import java.util.List;
 @Entity
 @Table(name = "schools")
 @Getter @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 public class School {
     @Id
@@ -50,4 +48,11 @@ public class School {
     @JsonIgnore
     private List<ProfileSchool> profileSchools = new ArrayList<>();
 
+    @Builder
+    public School(String name, SchoolType type, String imageUrl, String address) {
+        this.name = name;
+        this.type = type;
+        this.imageUrl = imageUrl;
+        this.address = address;
+    }
 }

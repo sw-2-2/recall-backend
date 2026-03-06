@@ -45,4 +45,11 @@ public class User {
             profile.setUser(this);
         }
     }
+
+    public void updateProfile(ProfileUpdateCommand command) {
+        if (this.profile == null) {
+            throw new IllegalStateException("등록된 프로필이 없습니다");
+        }
+        this.profile.update(command);
+    }
 }

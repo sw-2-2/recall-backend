@@ -43,4 +43,16 @@ public class Profile {
         this.phone = phone;
         this.address = address;
     }
+
+    public void update(ProfileUpdateCommand command) {
+        if (command.name() != null && !command.name().isBlank()) {
+            this.name = command.name();
+        }
+        if (command.phone() != null) {
+            this.phone = command.phone();
+        }
+        if (command.address() != null) {
+            this.address = command.address();
+        }
+    }
 }

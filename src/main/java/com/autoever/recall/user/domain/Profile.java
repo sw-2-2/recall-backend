@@ -50,7 +50,7 @@ public class Profile {
     }
 
     public void update(ProfileUpdateCommand command) {
-        if (command.name() != null && !command.name().isBlank()) {
+        if (command.name() != null) {
             this.name = command.name();
         }
         if (command.phone() != null) {

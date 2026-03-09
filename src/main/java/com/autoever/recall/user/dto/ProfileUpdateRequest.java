@@ -17,7 +17,7 @@ public record ProfileUpdateRequest(
 ) {
     public ProfileUpdateCommand toDomain() {
         return new ProfileUpdateCommand(
-                name != null ? name.trim() : null,
+                name != null && !name.isBlank() ? name.trim() : null,
                 phone,
                 address != null ? address.trim() : null
         );

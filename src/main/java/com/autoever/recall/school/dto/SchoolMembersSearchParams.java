@@ -6,8 +6,8 @@ import jakarta.validation.constraints.Size;
 public record SchoolMembersSearchParams(
         String type,
 
-        @NotBlank
-        @Size(min = 1)
+        @NotBlank(message = "키워드는 필수값입니다")
+        @Size(min = 1, message = "키워드는 최소 1자입니다")
         String keyword
 ) {
     private static final String ALL_TYPE = "all";

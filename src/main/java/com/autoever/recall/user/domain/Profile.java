@@ -24,9 +24,10 @@ public class Profile {
     @Column(nullable = false, length = 20)
     private String name;
 
-    @Column(length = 11)
+    @Column(nullable = true, length = 11)
     private String phone;
 
+    @Column(nullable = true)
     private String address;
 
     @CreatedDate

@@ -1,5 +1,7 @@
 package com.autoever.recall.school.dto;
 
+import com.autoever.recall.school.domain.SchoolCommandContent;
+import com.autoever.recall.school.domain.SchoolConnectCommand;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -13,4 +15,9 @@ public record SchoolConnectRequest(
         @Min(value = 1_920, message = "졸업년도는 1920년 미만일 수 없습니다")
         Integer graduationYear
 ) implements SchoolRequestContent {
+
+    @Override
+    public SchoolCommandContent toDomain() {
+        return new SchoolConnectCommand(id, graduationYear);
+    }
 }

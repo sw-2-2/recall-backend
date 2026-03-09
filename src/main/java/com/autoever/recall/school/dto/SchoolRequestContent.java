@@ -1,5 +1,6 @@
 package com.autoever.recall.school.dto;
 
+import com.autoever.recall.school.domain.SchoolCommandContent;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -14,4 +15,5 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 })
 public sealed interface SchoolRequestContent
     permits SchoolCreateRequest, SchoolConnectRequest {
+    SchoolCommandContent toDomain();
 }

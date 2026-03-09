@@ -1,5 +1,7 @@
 package com.autoever.recall.school.dto;
 
+import com.autoever.recall.school.domain.SchoolCommandContent;
+import com.autoever.recall.school.domain.SchoolCreateCommand;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -14,4 +16,13 @@ public record SchoolCreateRequest(
         @Size(max = 255, message = "주소는 최대 255자입니다")
         String address
 ) implements SchoolRequestContent {
+
+    @Override
+    public SchoolCommandContent toDomain() {
+        return new SchoolCreateCommand(
+                name,
+                SchoolTypeDto.fromKey(type).toDomain(),
+                address
+        );
+    }
 }

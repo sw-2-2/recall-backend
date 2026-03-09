@@ -1,4 +1,4 @@
-package com.autoever.recall.user;
+package com.autoever.recall.user.repository;
 
 import com.autoever.recall.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;

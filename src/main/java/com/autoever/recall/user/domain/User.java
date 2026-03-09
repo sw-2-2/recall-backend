@@ -60,4 +60,11 @@ public class User {
         }
         this.profile.update(command);
     }
+
+    @Builder
+    public User(Long id, String email) { // TODO: Service 추가 후 id 필드 제거
+        this.id = id;
+        this.email = email;
+        this.role = UserRole.USER;
+    }
 }

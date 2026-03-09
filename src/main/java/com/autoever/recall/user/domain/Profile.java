@@ -1,5 +1,7 @@
 package com.autoever.recall.user.domain;
 
+import com.autoever.recall.profileschool.domain.ProfileSchool;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -10,6 +12,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "profiles")
@@ -22,7 +26,6 @@ public class Profile {
     private Long id;
 
     @OneToOne(mappedBy = "profile")
-    @JoinColumn(nullable = false)
     private User user;
 
     @Column(nullable = false, length = 20)
@@ -41,6 +44,11 @@ public class Profile {
     @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    // 1:N 관계 (읽기 전용)
+    @OneToMany(mappedBy = "profile")
+    @JsonIgnore
+    private List<ProfileSchool> profileSchools = new ArrayList<>();
 
     @Builder
     public Profile(String name, String phone, String address) {

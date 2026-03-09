@@ -24,6 +24,7 @@ public class User {
     private String email;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = true)
     private UserRole role;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

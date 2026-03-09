@@ -1,7 +1,10 @@
 package com.autoever.recall.user.domain;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -19,6 +22,7 @@ public class Profile {
     private Long id;
 
     @OneToOne(mappedBy = "profile")
+    @JoinColumn(nullable = false)
     private User user;
 
     @Column(nullable = false, length = 20)

@@ -26,7 +26,10 @@ public record ProfileCreateRequest(
         return new ProfileCreateCommand(
                 name.trim(),
                 phone,
-                address != null ? address.trim() : null
+                address != null ? address.trim() : null,
+                schools.stream()
+                        .map(SchoolRequestContent::toDomain)
+                        .toList()
         );
     }
 }

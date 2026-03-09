@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "profiles")
-@Getter @Setter
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 public class Profile {
@@ -42,6 +42,10 @@ public class Profile {
         this.name = name;
         this.phone = phone;
         this.address = address;
+    }
+
+    public void registerUser(User user) {
+        this.user = user;
     }
 
     public void update(ProfileUpdateCommand command) {

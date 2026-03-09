@@ -2,6 +2,7 @@ package com.autoever.recall.user.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -51,5 +52,12 @@ public class User {
             throw new IllegalStateException("등록된 프로필이 없습니다");
         }
         this.profile.update(command);
+    }
+
+    @Builder
+    public User(Long id, String email) { // TODO: Service 추가 후 id 필드 제거
+        this.id = id;
+        this.email = email;
+        this.role = UserRole.USER;
     }
 }

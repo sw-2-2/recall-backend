@@ -18,11 +18,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
     /*
     * 해당 id의 User 찾기
     * Profile 포함
+    * Schools 포함
     * */
     @Query("""
-        SELECT u FROM User u
-        LEFT JOIN FETCH u.profile
+        SELECT DISTINCT u FROM User u
+        LEFT JOIN FETCH u.profile p
+        LEFT JOIN FETCH p.profileSchools ps
+        LEFT JOIN FETCH ps.school s
         WHERE u.id = :id
     """)
-    Optional<User> findByIdWithProfile(Long id);
+    Optional<User> findByIdWithProfileAndSchools(Long id);
 }

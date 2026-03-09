@@ -1,7 +1,6 @@
 package com.autoever.recall.school.dto;
 
 import com.autoever.recall.profileschool.domain.ProfileSchool;
-import com.autoever.recall.school.domain.SchoolType;
 import com.autoever.recall.user.domain.Profile;
 
 public record SchoolMembersDto(
@@ -22,12 +21,16 @@ public record SchoolMembersDto(
         String highSchoolName = null;
 
         for(ProfileSchool ps : profile.getProfileSchools()) {
-            if(ps.getSchool().getType() == SchoolType.ELEMENTARY) {
-                elementarySchoolName = ps.getSchool().getName();
-            } else if (ps.getSchool().getType() == SchoolType.MIDDLE) {
-                middleSchoolName = ps.getSchool().getName();
-            } else if (ps.getSchool().getType() == SchoolType.HIGH) {
-                highSchoolName = ps.getSchool().getName();
+            switch (ps.getSchool().getType()) {
+                case ELEMENTARY:
+                    elementarySchoolName = ps.getSchool().getName();
+                    break;
+                case MIDDLE:
+                    middleSchoolName = ps.getSchool().getName();
+                    break;
+                case HIGH:
+                    highSchoolName = ps.getSchool().getName();
+                    break;
             }
         }
 

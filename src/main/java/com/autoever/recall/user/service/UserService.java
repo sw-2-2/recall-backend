@@ -1,6 +1,6 @@
 package com.autoever.recall.user.service;
 
-import com.autoever.recall.user.domain.ProfileCreateCommand;
+import com.autoever.recall.user.domain.UserCreateCommand;
 import com.autoever.recall.user.domain.User;
 
 public interface UserService {
@@ -8,5 +8,5 @@ public interface UserService {
 
     User getUser(Long id);
 
-    User registerProfile(ProfileCreateCommand command);
+    User registerProfile(UserCreateCommand command);
 }

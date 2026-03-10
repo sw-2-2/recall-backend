@@ -1,6 +1,6 @@
 package com.autoever.recall.user.service;
 
-import com.autoever.recall.user.domain.ProfileCreateCommand;
+import com.autoever.recall.user.domain.UserCreateCommand;
 import com.autoever.recall.user.domain.User;
 import com.autoever.recall.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public User registerProfile(ProfileCreateCommand command) {
+    public User registerProfile(UserCreateCommand command) {
         return null;
     }
 

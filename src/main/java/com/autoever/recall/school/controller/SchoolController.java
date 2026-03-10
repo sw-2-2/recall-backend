@@ -1,12 +1,9 @@
 package com.autoever.recall.school.controller;
 
-import com.autoever.recall.profileschool.domain.ProfileSchool;
 import com.autoever.recall.school.domain.School;
 import com.autoever.recall.school.domain.SchoolType;
 import com.autoever.recall.school.dto.SchoolMembersResponse;
 import com.autoever.recall.school.dto.SchoolResponse;
-import com.autoever.recall.user.domain.Profile;
-import com.autoever.recall.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -103,37 +100,6 @@ public class SchoolController {
     // 학교 멤버 리스트 조회
     @GetMapping("/{id}/members")
     public ResponseEntity<SchoolMembersResponse> findAllMembers(@PathVariable Long id) {
-        int index = id.intValue();
-        // 예외 처리: 리스트의 범위를 벗어나는 id가 들어오면 빈 리스트 반환
-        if (index < 0 || index >= testSchools.size()) {
-            SchoolMembersResponse emptyResponse = SchoolMembersResponse.from(List.of());
-            return ResponseEntity.status(HttpStatus.OK).body(emptyResponse);
-        }
-
-        // id값에 해당하는 타겟 학교 꺼내기
-        School targetSchool = testSchools.get(index);
-
-        // 첫 번째 멤버 (해당 학교를 다니는 멤버로 동적 생성)
-        User user1 = User.builder().id(1L).email("user1@example.com").build();
-        Profile profile1 = Profile.builder().name("홍길동").phone("010-1111-1111").address("서울특별시 강남구").build();
-        user1.registerProfile(profile1);
-
-        ProfileSchool ps1Target = ProfileSchool.builder().profile(profile1).school(targetSchool).graduationYear(2010).build();
-
-        // 3. 두 번째 멤버
-        User user2 = User.builder().id(2L).email("user2@example.com").build();
-        Profile profile2 = Profile.builder().name("김현대").phone("010-2222-2222").address("서울특별시 동작구").build();
-        user2.registerProfile(profile2);
-
-        // 타겟 학교(targetSchool)와 멤버를 연결
-        ProfileSchool ps2Target = ProfileSchool.builder().profile(profile2).school(targetSchool).graduationYear(2022).build();
-        profile2.getProfileSchools().add(ps2Target);
-
-        // 4. ProfileSchool 리스트 만들기
-        List<ProfileSchool> targetProfileSchools = Arrays.asList(ps1Target, ps2Target);
-
-        SchoolMembersResponse response = SchoolMembersResponse.from(targetProfileSchools);
-
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return ResponseEntity.ok(null); // TODO
     }
 }

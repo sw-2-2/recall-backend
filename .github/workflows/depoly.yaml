@@ -42,7 +42,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd /home/${{ secrets.EC2_USERNAME }}/recall
+            cd /home/${{ secrets.EC2_USERNAME }}/recall-backend
             
             # 브랜치 고정 및 최신화
             git fetch origin main

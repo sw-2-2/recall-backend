@@ -52,6 +52,7 @@ jobs:
             echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
             echo "REDIS_PORT=${{ secrets.REDIS_PORT }}" >> .env
             echo "APP_PORT=${{ secrets.APP_PORT }}" >> .env
+            echo "JPA_DDL_AUTO=${{ secrets.JPA_DDL_AUTO }}" >> .env
             
             # 컨테이너 재빌드 및 실행
             docker-compose down

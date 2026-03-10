@@ -15,7 +15,9 @@ import java.util.List;
 @Entity
 @Table(name = "schools")
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @EntityListeners(AuditingEntityListener.class)
 public class School {
     @Id

@@ -1,12 +1,68 @@
 services:
+  # PostgreSQL: 데이터 영속성 보장
   postgres:
-    image: postgres:15
+    image: postgres:15-alpine
     container_name: recall-postgres
-    ports:
-      - "5432:5432"
     environment:
-      - POSTGRES_DB=${DB_NAME}
-      - POSTGRES_USER=${DB_USERNAME}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - ./postgres_data:/var/lib/postgresql/data
+      - recall-db-data:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT}:5432"
+    networks:
+      - recall-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis: 캐시 및 세션 데이터 보존
+  redis:
+    image: redis:7-alpine
+    container_name: recall-redis
+    ports:
+      - "${REDIS_PORT}:6379"
+    volumes:
+      - recall-redis-data:/data
+    networks:
+      - recall-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Spring Boot: 애플리케이션
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: recall-app
+    env_file:
+      - .env
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${DB_NAME}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+    ports:
+      - "${APP_PORT}:8080"
+    networks:
+      - recall-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+networks:
+  recall-network:
+    driver: bridge
+
+volumes:
+  recall-db-data:
+  recall-redis-data:

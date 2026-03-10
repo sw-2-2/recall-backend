@@ -16,7 +16,6 @@ public class SchoolServiceImpl implements SchoolService {
     private final SchoolRepository schoolRepository;
 
     @Override
-    @Transactional(readOnly = true)
     public List<School> searchSchools(SchoolType type, String keyword) {
         if(type == null) {
             return schoolRepository.findByNameContaining(keyword);

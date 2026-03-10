@@ -41,6 +41,8 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: recall-app
+    env_file:
+      - .env
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${DB_NAME}
       SPRING_DATASOURCE_USERNAME: ${DB_USER}

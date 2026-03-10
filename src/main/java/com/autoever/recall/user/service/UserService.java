@@ -18,7 +18,7 @@ public interface UserService {
      * UserSchool 포함
      * School 포함
      * */
-    User getUser(Long id);
+    User getUser();
 
     User updateUser(UserUpdateCommand command);
 }

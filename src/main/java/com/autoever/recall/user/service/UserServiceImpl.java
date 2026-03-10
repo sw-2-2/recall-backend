@@ -26,9 +26,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(Long id) {
-        return userRepository.findByIdWithSchools(id)
-                .orElseThrow(() -> new IllegalStateException("해당하는 유저를 찾을 수 없습니다. id: " + id));
+    public User getUser() {
+        return userRepository.findByIdWithSchools(1L) // TODO: JWT userId 받기
+                .orElseThrow(() -> new IllegalStateException("해당하는 유저를 찾을 수 없습니다. id: " + 1L));
     }
 
     @Override

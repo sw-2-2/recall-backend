@@ -1,0 +1,21 @@
+# Git
+.git
+.gitignore
+
+# IDE
+.idea/
+*.iml
+
+# Gradle 빌드 결과물 (로컬 빌드 파편 제외)
+build/
+!build/libs/*.jar
+.gradle/
+
+# Docker & CI/CD 관련
+docker-compose.yaml
+.env
+.env.example
+.github/
+
+# Documentation
+*.md

@@ -1,14 +1,11 @@
 package com.autoever.recall.user.dto;
 
-import com.autoever.recall.school.dto.SchoolRequestContent;
-import com.autoever.recall.user.domain.ProfileCreateCommand;
+import com.autoever.recall.user.domain.UserCreateCommand;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-import java.util.List;
-
-public record ProfileCreateRequest(
+public record UserCreateRequest(
         @NotBlank(message = "이름은 필수값입니다")
         @Size(max = 20, message = "이름은 최대 20자입니다")
         String name,
@@ -18,18 +15,13 @@ public record ProfileCreateRequest(
         String phone,
 
         @Size(max = 255)
-        String address,
-
-        List<SchoolRequestContent> schools
+        String address
 ) {
-    public ProfileCreateCommand toDomain() {
-        return new ProfileCreateCommand(
+    public UserCreateCommand toDomain() {
+        return new UserCreateCommand(
                 name.trim(),
                 phone,
-                address != null ? address.trim() : null,
-                schools.stream()
-                        .map(SchoolRequestContent::toDomain)
-                        .toList()
+                address != null ? address.trim() : null
         );
     }
 }

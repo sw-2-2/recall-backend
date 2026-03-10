@@ -52,4 +52,18 @@ public class User {
     @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    public void create(String email, UserCreateCommand command) {
+        this.email = email;
+        this.role = UserRole.USER;
+        this.name = command.name();
+        this.phone = command.phone();
+        this.address = command.address();
+    }
+
+    public void update(UserUpdateCommand command) {
+        this.name = command.name();
+        this.phone = command.phone();
+        this.address = command.address();
+    }
 }

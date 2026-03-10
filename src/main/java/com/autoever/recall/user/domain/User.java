@@ -60,4 +60,5 @@ public class User {
         }
         this.profile.update(command);
     }
+
 }

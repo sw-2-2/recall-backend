@@ -1,8 +1,9 @@
 package com.autoever.recall.user.domain;
 
+import com.autoever.recall.userschool.domain.UserSchool;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -10,6 +11,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -28,9 +31,18 @@ public class User {
     @Column(nullable = true)
     private UserRole role;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "profile_id", nullable = true)
-    private Profile profile;
+    @Column(nullable = false, length = 20)
+    private String name;
+
+    @Column(nullable = true, length = 11)
+    private String phone;
+
+    @Column(nullable = true)
+    private String address;
+
+    @OneToMany(mappedBy = "profile")
+    @JsonIgnore
+    private List<UserSchool> userSchools = new ArrayList<>();
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)
@@ -39,25 +51,4 @@ public class User {
     @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-    @Builder
-    public User(Long id, String email) { // TODO: Service 추가 후 id 필드 제거
-        this.id = id;
-        this.email = email;
-        this.role = UserRole.USER;
-    }
-
-    public void registerProfile(Profile profile) {
-        this.profile = profile;
-        if (profile != null && profile.getUser() != this) {
-            profile.registerUser(this);
-        }
-    }
-
-    public void updateProfile(ProfileUpdateCommand command) {
-        if (this.profile == null) {
-            throw new IllegalStateException("등록된 프로필이 없습니다");
-        }
-        this.profile.update(command);
-    }
 }

@@ -4,13 +4,12 @@ import com.autoever.recall.user.domain.User;
 
 public record UserProfileResponse(
         Long id,
-        String email,
-        ProfileDto profile) {
+        String email
+) {
     public static UserProfileResponse from(User user) {
         return new  UserProfileResponse(
                 user.getId(),
-                user.getEmail(),
-                ProfileDto.from(user.getProfile())
+                user.getEmail()
         );
     }
 }

@@ -10,11 +10,4 @@ public record ProfileCreateCommand(
         String address,
         List<SchoolCommandContent> schools
 ) {
-    public Profile toProfile() {
-        return Profile.builder()
-                .name(name)
-                .phone(phone)
-                .address(address)
-                .build();
-    }
 }

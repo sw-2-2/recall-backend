@@ -84,6 +84,7 @@ public class SchoolController {
             @RequestParam(value = "keyword", required = false) String keyword
     ) {
         // 나중: controller에서 all 분기처리, primitive type으로 넘기기
+        // all -> null으로 바꾸도록
         List<School> filteredSchools = testSchools.stream()
                                                   .filter(school -> {
                                                       if ("all".equals(type)) {

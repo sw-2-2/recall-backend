@@ -3,13 +3,14 @@ spring:
     name: recall
 
   datasource:
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:recall_db}
-    username: ${DB_USERNAME:}
-    password: ${DB_PASSWORD:}
+    # 도커 내부에서는 서비스명인 'postgres'를 사용하도록 유도
+    url: jdbc:postgresql://${DB_HOST:postgres}:${DB_PORT:5432}/${DB_NAME:recall_db}
+    username: ${DB_USER:admin}
+    password: ${DB_PASSWORD:password123}
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: ${JPA_DDL_AUTO:update}
     show-sql: true
     properties:
       hibernate:
@@ -17,3 +18,14 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         # 연관된 초/중/고 정보를 한 번의 IN 절로 가져오도록 설정 (Lazy Loading, N+1 대책)
         default_batch_fetch_size: 1000
+
+  data:
+    redis:
+      host: ${REDIS_HOST:redis}
+      port: ${REDIS_PORT:6379}
+
+# @Cacheable 사용시 활성화
+#  cache:
+#    type: redis
+#    redis:
+#      time-to-live: 6000000

@@ -15,9 +15,9 @@ import java.util.List;
 @Entity
 @Table(name = "schools")
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 public class School {
     @Id
@@ -45,16 +45,8 @@ public class School {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    // 1:N 관계 (읽기 전용)
-    @OneToMany(mappedBy = "school")
+    @Builder.Default
+    @OneToMany(mappedBy = "school", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<UserSchool> userSchools = new ArrayList<>();
-
-    @Builder
-    public School(String name, SchoolType type, String imageUrl, String address) {
-        this.name = name;
-        this.type = type;
-        this.imageUrl = imageUrl;
-        this.address = address;
-    }
 }

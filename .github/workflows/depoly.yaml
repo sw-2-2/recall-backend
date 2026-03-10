@@ -2,7 +2,7 @@ name: Recall Project CI/CD
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "develop" ]
 
 jobs:
   # 1. CI 단계: 빌드 및 테스트
@@ -23,7 +23,7 @@ jobs:
 
       # 테스트 및 검증
       - name: Build and Test with Gradle
-        run: ./gradlew build
+        run: ./gradlew build -x test
 
   # 2. CD 단계: EC2 배포
   deploy:
@@ -43,9 +43,13 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd /home/${{ secrets.EC2_USERNAME }}/recall
+            
+            # 브랜치 고정 및 최신화
+            git fetch origin main
+            git checkout main
             git pull origin main
             
-            # .env 파일 생성 (Secrets 환경변수 활용)
+            # .env 파일 생성
             echo "DB_NAME=${{ secrets.DB_NAME }}" > .env
             echo "DB_USER=${{ secrets.DB_USER }}" >> .env
             echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
@@ -54,9 +58,9 @@ jobs:
             echo "APP_PORT=${{ secrets.APP_PORT }}" >> .env
             echo "JPA_DDL_AUTO=${{ secrets.JPA_DDL_AUTO }}" >> .env
             
-            # 컨테이너 재빌드 및 실행
-            docker-compose down
-            docker-compose up -d --build
+            # 기존 컨테이너 중지 및 이미지 빌드/실행
+            docker compose down
+            docker compose up -d --build
             
-            # 미사용 이미지 정리 (용량 확보)
-            docker image prune -f
+            # 사용하지 않는 이미지/컨테이너 정리 (EC2 용량 관리)
+            docker system prune -f

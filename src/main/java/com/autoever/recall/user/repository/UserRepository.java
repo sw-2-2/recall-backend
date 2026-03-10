@@ -11,21 +11,20 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     /*
     * 해당 email의 User 찾기
-    * Profile 미포함
+    * UserSchool 미포함
     * */
     Optional<User> findByEmail(String email);
 
     /*
     * 해당 id의 User 찾기
-    * Profile 포함
-    * Schools 포함
+    * UserSchool 포함
+    * School 포함
     * */
     @Query("""
         SELECT DISTINCT u FROM User u
-        LEFT JOIN FETCH u.profile p
-        LEFT JOIN FETCH p.profileSchools ps
-        LEFT JOIN FETCH ps.school s
+        LEFT JOIN FETCH u.userSchools us
+        LEFT JOIN FETCH us.school s
         WHERE u.id = :id
     """)
-    Optional<User> findByIdWithProfileAndSchools(Long id);
+    Optional<User> findByIdWithSchools(Long id);
 }

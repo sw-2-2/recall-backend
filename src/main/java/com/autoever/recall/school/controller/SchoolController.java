@@ -1,6 +1,6 @@
 package com.autoever.recall.school.controller;
 
-import com.autoever.recall.profileschool.domain.ProfileSchool;
+import com.autoever.recall.userschool.domain.UserSchool;
 import com.autoever.recall.school.domain.School;
 import com.autoever.recall.school.domain.SchoolType;
 import com.autoever.recall.school.dto.SchoolMembersResponse;
@@ -118,7 +118,7 @@ public class SchoolController {
         Profile profile1 = Profile.builder().name("홍길동").phone("010-1111-1111").address("서울특별시 강남구").build();
         user1.registerProfile(profile1);
 
-        ProfileSchool ps1Target = ProfileSchool.builder().profile(profile1).school(targetSchool).graduationYear(2010).build();
+        UserSchool ps1Target = UserSchool.builder().user(profile1).school(targetSchool).graduationYear(2010).build();
 
         // 3. 두 번째 멤버
         User user2 = User.builder().id(2L).email("user2@example.com").build();
@@ -126,13 +126,13 @@ public class SchoolController {
         user2.registerProfile(profile2);
 
         // 타겟 학교(targetSchool)와 멤버를 연결
-        ProfileSchool ps2Target = ProfileSchool.builder().profile(profile2).school(targetSchool).graduationYear(2022).build();
-        profile2.getProfileSchools().add(ps2Target);
+        UserSchool ps2Target = UserSchool.builder().user(profile2).school(targetSchool).graduationYear(2022).build();
+        profile2.getUserSchools().add(ps2Target);
 
         // 4. ProfileSchool 리스트 만들기
-        List<ProfileSchool> targetProfileSchools = Arrays.asList(ps1Target, ps2Target);
+        List<UserSchool> targetUserSchools = Arrays.asList(ps1Target, ps2Target);
 
-        SchoolMembersResponse response = SchoolMembersResponse.from(targetProfileSchools);
+        SchoolMembersResponse response = SchoolMembersResponse.from(targetUserSchools);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

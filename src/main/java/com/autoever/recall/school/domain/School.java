@@ -1,6 +1,6 @@
 package com.autoever.recall.school.domain;
 
-import com.autoever.recall.profileschool.domain.ProfileSchool;
+import com.autoever.recall.userschool.domain.UserSchool;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -48,7 +48,7 @@ public class School {
     // 1:N 관계 (읽기 전용)
     @OneToMany(mappedBy = "school")
     @JsonIgnore
-    private List<ProfileSchool> profileSchools = new ArrayList<>();
+    private List<UserSchool> userSchools = new ArrayList<>();
 
     @Builder
     public School(String name, SchoolType type, String imageUrl, String address) {

@@ -1,6 +1,6 @@
 package com.autoever.recall.school.dto;
 
-import com.autoever.recall.profileschool.domain.ProfileSchool;
+import com.autoever.recall.userschool.domain.UserSchool;
 import com.autoever.recall.user.domain.Profile;
 
 public record SchoolMembersDto(
@@ -13,14 +13,14 @@ public record SchoolMembersDto(
         String middleSchoolName,
         String highSchoolName
 ) {
-    public static SchoolMembersDto from(ProfileSchool targetProfileSchool) {
-        Profile profile = targetProfileSchool.getProfile();
+    public static SchoolMembersDto from(UserSchool targetUserSchool) {
+        Profile profile = targetUserSchool.getUser();
 
         String elementarySchoolName = null;
         String middleSchoolName = null;
         String highSchoolName = null;
 
-        for(ProfileSchool ps : profile.getProfileSchools()) {
+        for(UserSchool ps : profile.getUserSchools()) {
             switch (ps.getSchool().getType()) {
                 case ELEMENTARY:
                     elementarySchoolName = ps.getSchool().getName();
@@ -39,7 +39,7 @@ public record SchoolMembersDto(
                 profile.getName(),
                 profile.getPhone(),
                 profile.getAddress(),
-                targetProfileSchool.getGraduationYear(),
+                targetUserSchool.getGraduationYear(),
                 elementarySchoolName,
                 middleSchoolName,
                 highSchoolName

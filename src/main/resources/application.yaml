@@ -22,6 +22,16 @@ spring:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
 
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    use-root-path: true
+    display-request-duration: true
+    disable-swagger-default-url: true
+  api-docs:
+    path: /api-docs
+  operations-sorter: alpha
+
 # @Cacheable 사용시 활성화
 #  cache:
 #    type: redis

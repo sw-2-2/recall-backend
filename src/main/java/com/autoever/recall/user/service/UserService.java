@@ -1,18 +1,16 @@
 package com.autoever.recall.user.service;
 
 import com.autoever.recall.user.domain.User;
+import com.autoever.recall.user.domain.UserCreateCommand;
 import com.autoever.recall.user.domain.UserUpdateCommand;
 
 public interface UserService {
+    User createUser(String email, UserCreateCommand command); // TODO: JWT 이후 email 빼기
+
     /*
     * UserSchool 미포함
     * */
     User findByEmail(String email);
-
-    /*
-     * UserSchool 미포함
-     * */
-    User findById(Long id);
 
     /*
      * UserSchool 포함

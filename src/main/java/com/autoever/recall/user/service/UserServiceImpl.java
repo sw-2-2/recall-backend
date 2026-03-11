@@ -18,6 +18,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User createUser(String email, UserCreateCommand command) {
+        if (userRepository.existsByEmail(email)) {
+            throw new IllegalStateException("이미 존재하는 유저입니다. email:" + email);
+        }
         User user = User.builder()
                 .email(email)
                 .role(UserRole.USER)

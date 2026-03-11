@@ -2,6 +2,7 @@ package com.autoever.recall.school.service;
 
 import com.autoever.recall.school.domain.School;
 import com.autoever.recall.school.domain.SchoolType;
+import com.autoever.recall.school.dto.SchoolFilterParams;
 import com.autoever.recall.school.dto.SchoolMembersSearchParams;
 import com.autoever.recall.school.dto.SchoolTypeDto;
 import com.autoever.recall.school.repository.SchoolRepository;
@@ -27,5 +28,15 @@ public class SchoolServiceImpl implements SchoolService {
 
         SchoolType type = SchoolTypeDto.fromKey(params.type()).toDomain();
         return schoolRepository.findByTypeAndNameContaining(type, keyword);
+    }
+
+    @Override
+    public List<School> getSchools(SchoolFilterParams params) {
+        if(params.isAllType()) {
+            return schoolRepository.findAll();
+        }
+
+        SchoolType type = SchoolTypeDto.fromKey(params.type()).toDomain();
+        return schoolRepository.findByType(type);
     }
 }

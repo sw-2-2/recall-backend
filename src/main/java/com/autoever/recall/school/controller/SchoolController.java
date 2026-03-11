@@ -1,6 +1,7 @@
 package com.autoever.recall.school.controller;
 
 import com.autoever.recall.school.domain.School;
+import com.autoever.recall.school.dto.SchoolFilterParams;
 import com.autoever.recall.school.dto.SchoolMembersResponse;
 import com.autoever.recall.school.dto.SchoolMembersSearchParams;
 import com.autoever.recall.school.dto.SchoolResponse;
@@ -17,6 +18,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SchoolController {
     private final SchoolService schoolService;
+
+    @GetMapping
+    public ResponseEntity<SchoolResponse> getSchools(
+            @Valid @ModelAttribute SchoolFilterParams params
+    ){
+        List<School> schools = schoolService.getSchools(params);
+        return ResponseEntity.ok(SchoolResponse.from(schools));
+    }
 
     // 학교 검색 리스트 조회
     @GetMapping("/search")

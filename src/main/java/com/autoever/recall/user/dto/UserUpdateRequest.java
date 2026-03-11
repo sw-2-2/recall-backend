@@ -1,10 +1,12 @@
 package com.autoever.recall.user.dto;
 
-import com.autoever.recall.user.domain.ProfileUpdateCommand;
+import com.autoever.recall.user.domain.UserUpdateCommand;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public record ProfileUpdateRequest(
+public record UserUpdateRequest(
+        @NotBlank(message = "이름은 필수값입니다")
         @Size(max = 20, message = "이름은 최대 20자입니다")
         String name,
 
@@ -15,9 +17,9 @@ public record ProfileUpdateRequest(
         @Size(max = 255)
         String address
 ) {
-    public ProfileUpdateCommand toDomain() {
-        return new ProfileUpdateCommand(
-                name != null && !name.isBlank() ? name.trim() : null,
+    public UserUpdateCommand toDomain() {
+        return new UserUpdateCommand(
+                name.trim(),
                 phone,
                 address != null ? address.trim() : null
         );

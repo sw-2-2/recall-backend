@@ -1,31 +1,30 @@
-package com.autoever.recall.profileschool.domain;
+package com.autoever.recall.userschool.domain;
 
 import com.autoever.recall.school.domain.School;
-import com.autoever.recall.user.domain.Profile;
+import com.autoever.recall.user.domain.User;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "profile_schools")
+@Table(name = "user_schools")
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-public class ProfileSchool {
+public class UserSchool {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     // N:1 관계 (FK 관리)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "profile_id", nullable = false)
-    private Profile profile;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "school_id", nullable = false)
@@ -37,11 +36,4 @@ public class ProfileSchool {
     @CreatedDate
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
-
-    @Builder
-    public ProfileSchool(Profile profile, School school, Integer graduationYear) {
-        this.profile = profile;
-        this.school = school;
-        this.graduationYear = graduationYear;
-    }
 }

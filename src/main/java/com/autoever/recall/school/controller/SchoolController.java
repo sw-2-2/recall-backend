@@ -1,6 +1,7 @@
 package com.autoever.recall.school.controller;
 
 import com.autoever.recall.school.domain.School;
+import com.autoever.recall.school.domain.SchoolType;
 import com.autoever.recall.school.dto.*;
 import com.autoever.recall.school.service.SchoolService;
 import jakarta.validation.Valid;
@@ -18,9 +19,11 @@ public class SchoolController {
 
     @GetMapping
     public ResponseEntity<SchoolResponse> getSchools(
-            @Valid @ModelAttribute SchoolFilterParams params
+            @ModelAttribute @Valid SchoolFilterParams params
     ){
-        List<School> schools = schoolService.getSchools(params);
+        SchoolType type = params.isAllType() ? null : SchoolTypeDto.fromKey(params.type()).toDomain();
+
+        List<School> schools = schoolService.getSchools(params.isAllType(), type);
         return ResponseEntity.ok(SchoolResponse.from(schools));
     }
 
@@ -29,7 +32,9 @@ public class SchoolController {
     public ResponseEntity<SchoolResponse> findAllSchools(
             @Valid @ModelAttribute SchoolMembersSearchParams params
             ) {
-        List<School> schools = schoolService.searchSchools(params);
+        SchoolType type = params.isAllType() ? null : SchoolTypeDto.fromKey(params.type()).toDomain();
+
+        List<School> schools = schoolService.searchSchools(params.keyword(), params.isAllType(), type);
         return ResponseEntity.ok(SchoolResponse.from(schools));
     }
 

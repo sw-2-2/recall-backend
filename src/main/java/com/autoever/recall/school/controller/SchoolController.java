@@ -40,13 +40,13 @@ public class SchoolController {
 
     // 학교 멤버 리스트 조회
     @GetMapping("/{id}/members")
-    public ResponseEntity<SchoolMemberListResponse> getSchoolMembers(@PathVariable("id") Long id) {
+    public ResponseEntity<SchoolMembersResponse> getSchoolMembers(@PathVariable("id") Long id) {
         List<SchoolMemberResponse> userSchools = schoolService.getSchoolMembers(id)
                 .stream()
                 .map(SchoolMemberResponse::from)
                 .toList();
 
-        SchoolMemberListResponse response = new SchoolMemberListResponse(userSchools);
+        SchoolMembersResponse response = new SchoolMembersResponse(userSchools);
 
         return ResponseEntity.ok(response);
     }

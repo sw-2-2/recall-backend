@@ -38,3 +38,5 @@ out/
 
 .env
 postgres_data/
+docker-compose-local.yaml
+src/main/resources/application-local.yaml

@@ -12,8 +12,8 @@ public record SchoolMemberResponse(
         String middleSchoolName,
         String highSchoolName
 ) {
-    public static SchoolMemberResponse from(UserSchool targetUs) {
-        var user = targetUs.getUser();
+    public static SchoolMemberResponse from(UserSchool targetUserSchool) {
+        var user = targetUserSchool.getUser();
         String elementary = null;
         String middle = null;
         String high = null;
@@ -35,7 +35,7 @@ public record SchoolMemberResponse(
                 user.getName(),
                 user.getPhone(),
                 user.getAddress(),
-                targetUs.getGraduationYear(),
+                targetUserSchool.getGraduationYear(),
                 elementary,
                 middle,
                 high

@@ -9,9 +9,10 @@ import java.util.List;
 
 public interface UserSchoolRepository extends JpaRepository<UserSchool, Long> {
     // 학교 멤버 리스트 조회
-    @Query("SELECT ps FROM ProfileSchool ps " +
-            "JOIN FETCH ps.profile p " +
-            "JOIN FETCH p.user u " +
-            "WHERE ps.school.id = :schoolId")
-    List<UserSchool> findMembersBySchoolId(@Param("schoolId") Long schoolId);
+    @Query("SELECT DISTINCT us FROM UserSchool us " +
+            "JOIN FETCH us.user u " +
+            "JOIN FETCH u.userSchools uss " +
+            "JOIN FETCH uss.school s " +
+            "WHERE us.school.id = :schoolId")
+    List<UserSchool> findAllMembersWithDetails(@Param("schoolId") Long schoolId);
 }

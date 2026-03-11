@@ -1,11 +1,9 @@
 package com.autoever.recall.school.controller;
 
 import com.autoever.recall.school.domain.School;
-import com.autoever.recall.school.dto.SchoolFilterParams;
-import com.autoever.recall.school.dto.SchoolMembersResponse;
-import com.autoever.recall.school.dto.SchoolMembersSearchParams;
-import com.autoever.recall.school.dto.SchoolResponse;
+import com.autoever.recall.school.dto.*;
 import com.autoever.recall.school.service.SchoolService;
+import com.autoever.recall.userschool.domain.UserSchool;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +36,15 @@ public class SchoolController {
 
     // 학교 멤버 리스트 조회
     @GetMapping("/{id}/members")
-    public ResponseEntity<SchoolMembersResponse> findAllMembers(@PathVariable Long id) {
-        return ResponseEntity.ok(null); // TODO
+    public ResponseEntity<SchoolMemberListResponse> getSchoolMembers(@PathVariable("id") Long id) {
+        List<UserSchool> userSchools = schoolService.getSchoolMembers(id);
+
+        List<SchoolMemberResponse> memberResponses = userSchools.stream()
+                .map(SchoolMemberResponse::from)
+                .toList();
+
+        SchoolMemberListResponse response = new SchoolMemberListResponse(memberResponses);
+
+        return ResponseEntity.ok(response);
     }
 }

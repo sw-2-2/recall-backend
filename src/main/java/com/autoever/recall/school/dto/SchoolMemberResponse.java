@@ -1,5 +1,6 @@
 package com.autoever.recall.school.dto;
 
+import com.autoever.recall.user.domain.User;
 import com.autoever.recall.userschool.domain.UserSchool;
 
 public record SchoolMemberResponse(
@@ -13,7 +14,7 @@ public record SchoolMemberResponse(
         String highSchoolName
 ) {
     public static SchoolMemberResponse from(UserSchool targetUserSchool) {
-        var user = targetUserSchool.getUser();
+        User user = targetUserSchool.getUser();
         String elementary = null;
         String middle = null;
         String high = null;

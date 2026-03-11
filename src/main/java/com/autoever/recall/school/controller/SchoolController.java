@@ -30,7 +30,7 @@ public class SchoolController {
     // 학교 검색 리스트 조회
     @GetMapping("/search")
     public ResponseEntity<SchoolResponse> findAllSchools(
-            @Valid @ModelAttribute SchoolMembersSearchParams params
+            @ModelAttribute @Valid SchoolMembersSearchParams params
             ) {
         SchoolType type = params.isAllType() ? null : SchoolTypeDto.fromKey(params.type()).toDomain();
 

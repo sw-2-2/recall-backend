@@ -14,4 +14,7 @@ public interface SchoolRepository extends JpaRepository<School, Long> {
 
     // 학교 리스트 조회 (키워드를 포함, 특정 타입이 주어질 떄)
     List<School> findByTypeAndNameContaining(SchoolType type, String keyword);
+
+    // 특정 타입의 학교 리스트 조회
+    List<School> findByType(SchoolType type);
 }

@@ -17,4 +17,8 @@ public record SchoolMembersSearchParams(
             type = ALL_TYPE;
         }
     }
+
+    public boolean isAllType() {
+        return ALL_TYPE.equals(type);
+    }
 }

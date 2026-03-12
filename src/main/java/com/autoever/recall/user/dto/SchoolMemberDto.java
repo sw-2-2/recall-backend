@@ -1,5 +1,6 @@
 package com.autoever.recall.user.dto;
 
+import com.autoever.recall.school.domain.School;
 import com.autoever.recall.user.domain.User;
 import com.autoever.recall.userschool.domain.UserSchool;
 
@@ -21,7 +22,7 @@ public record SchoolMemberDto(
 
         // Fetch Join으로 이미 로딩된 데이터이므로 추가 쿼리 없이 순회 가능
         for (UserSchool us : user.getUserSchools()) {
-            var school = us.getSchool();
+            School school = us.getSchool();
             if (school == null) continue;
 
             switch (school.getType()) {

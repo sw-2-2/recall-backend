@@ -54,9 +54,9 @@ public class SchoolController {
 
     // 학교 세부정보 조회
     @GetMapping("/{id}")
-    public ResponseEntity<SchoolResponse> getSchool(@PathVariable("id") Long id) {
+    public ResponseEntity<SchoolDto> getSchool(@PathVariable("id") Long id) {
         School school = schoolService.getSchool(id);
 
-        return ResponseEntity.ok(SchoolResponse.from(school));
+        return ResponseEntity.ok(SchoolDto.from(school));
     }
 }

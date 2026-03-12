@@ -5,6 +5,7 @@ import com.autoever.recall.user.domain.User;
 import com.autoever.recall.user.domain.UserCreateCommand;
 import com.autoever.recall.user.domain.UserSchoolConnectCommand;
 import com.autoever.recall.user.domain.UserUpdateCommand;
+import com.autoever.recall.userschool.domain.UserSchool;
 
 public interface UserService {
     User createUser(String email, UserCreateCommand command); // TODO: JWT 이후 email 빼기
@@ -22,5 +23,5 @@ public interface UserService {
 
     User updateUser(UserUpdateCommand command);
 
-    User connectUserAndSchool(UserSchoolConnectCommand command, SchoolType type);
+    UserSchool connectUserAndSchool(SchoolType type, UserSchoolConnectCommand command);
 }

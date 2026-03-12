@@ -60,13 +60,12 @@ public class UserServiceImpl implements UserService {
     }
 
     /*
-    * 1. User가 이미 type의 학교를 갖고 있는지 검사
-    * 2. 연결할 학교가 존재하는 지 검사
-    * 3. UserSchool을 생성 후 연결
-    * */
+     * 1. User가 이미 type의 학교를 갖고 있는지 검사
+     * 2. 연결할 학교가 존재하는 지 검사
+     * 3. UserSchool을 생성 후 연결
+     * */
     @Override
-    @Transactional
-    public User connectUserAndSchool(UserSchoolConnectCommand command, SchoolType type) {
+    public UserSchool connectUserAndSchool(SchoolType type, UserSchoolConnectCommand command) {
         User user = getUser();
         if (user.hasSchoolType(type)) {
             throw new IllegalStateException("이미 해당 유형의 학교와 연결되어 있습니다. type: " + type);
@@ -78,6 +77,6 @@ public class UserServiceImpl implements UserService {
                 .graduationYear(command.graduationYear())
                 .build();
         user.addUserSchool(userSchool);
-        return user;
+        return userSchool;
     }
 }

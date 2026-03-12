@@ -1,8 +1,8 @@
 package com.autoever.recall.user.service;
 
-import com.autoever.recall.user.domain.User;
-import com.autoever.recall.user.domain.UserCreateCommand;
-import com.autoever.recall.user.domain.UserUpdateCommand;
+import java.util.List;
+import com.autoever.recall.user.domain.*;
+import com.autoever.recall.userschool.domain.UserSchool;
 
 public interface UserService {
     User createUser(String email, UserCreateCommand command); // TODO: JWT 이후 email 빼기
@@ -19,4 +19,10 @@ public interface UserService {
     User getUser();
 
     User updateUser(UserUpdateCommand command);
+
+    List<UserSchool> getMySchoolMembers(Long schoolId);
+    
+    UserSchool connectUserAndSchool(UserSchoolConnectCommand command);
+
+    UserSchool createSchoolAndConnectUser(UserSchoolCreateCommand command);
 }

@@ -4,13 +4,13 @@ import com.autoever.recall.school.domain.School;
 
 import java.util.List;
 
-public record SchoolResponse(List<SchoolDto> schools) {
-    public static SchoolResponse from(List<School> schoolList) {
-        List<SchoolDto> dtoList = schoolList.stream()
+public record SchoolsResponse(List<SchoolDto> schools) {
+    public static SchoolsResponse from(List<School> schools) {
+        List<SchoolDto> dtoList = schools.stream()
                                             .map(SchoolDto::from)
                                             .toList();
 
-        return new SchoolResponse(dtoList);
+        return new SchoolsResponse(dtoList);
     }
 
 }

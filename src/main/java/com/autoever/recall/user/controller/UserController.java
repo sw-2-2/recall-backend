@@ -1,10 +1,15 @@
 package com.autoever.recall.user.controller;
 
+import com.autoever.recall.school.domain.SchoolType;
+import com.autoever.recall.school.dto.SchoolTypeDto;
 import com.autoever.recall.user.domain.User;
 import com.autoever.recall.user.domain.UserCreateCommand;
 import com.autoever.recall.user.domain.UserUpdateCommand;
 import com.autoever.recall.user.dto.*;
 import com.autoever.recall.user.service.UserService;
+import com.autoever.recall.userschool.domain.UserSchool;
+import com.autoever.recall.userschool.dto.UserSchoolDto;
+import com.autoever.recall.userschool.service.UserSchoolService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final UserSchoolService userSchoolService;
 
     @PostMapping
     public ResponseEntity<UserCreateResponse> createUser(@RequestBody @Valid UserCreateRequest request) {
@@ -36,5 +42,13 @@ public class UserController {
         UserUpdateCommand command = request.toDomain();
         UserUpdateResponse response = UserUpdateResponse.from(userService.updateUser(command));
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/schools/{type}")
+    public ResponseEntity<UserSchoolDto> getMySchool(@PathVariable(value = "type", required = true) String type) {
+        SchoolType schoolType = SchoolTypeDto.fromKey(type).toDomain();
+
+        UserSchool userSchool = userSchoolService.getMySchool(schoolType);
+        return ResponseEntity.ok(UserSchoolDto.from(userSchool));
     }
 }

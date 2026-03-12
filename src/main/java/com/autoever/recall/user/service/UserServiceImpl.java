@@ -5,6 +5,7 @@ import com.autoever.recall.school.domain.SchoolCreateCommand;
 import com.autoever.recall.school.service.SchoolService;
 import com.autoever.recall.user.domain.*;
 import com.autoever.recall.user.repository.UserRepository;
+import com.autoever.recall.userschool.service.UserSchoolService;
 import com.autoever.recall.user.service.exception.DuplicateEmailException;
 import com.autoever.recall.user.service.exception.UserNotFoundException;
 import com.autoever.recall.user.service.exception.UserSchoolAlreadyExistsException;
@@ -13,11 +14,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final UserSchoolService userSchoolService;
     private final SchoolService schoolService;
 
     @Override
@@ -62,6 +66,20 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
+    public List<UserSchool> getMySchoolMembers(Long schoolId) {
+        Long tempUserId = 1L; // JWT 전 임시 지정
+
+        boolean isEnrolled = userRepository.isUserEnrolledInSchool(tempUserId, schoolId);
+        if(!isEnrolled) {
+            throw new IllegalArgumentException(
+                    String.format("사용자(ID: %d)는 해당 학교(ID: %d)의 소속이 아닙니다.", tempUserId, schoolId)
+            );
+        }
+
+        return userSchoolService.getSchoolMembers(schoolId);
+    }
+  
     /*
      * 1. User가 이미 type의 학교를 갖고 있는지 검사
      * 2. 연결할 학교가 존재하는 지 검사

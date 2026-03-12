@@ -1,9 +1,10 @@
-package com.autoever.recall.school.dto;
+package com.autoever.recall.user.dto;
 
+import com.autoever.recall.school.domain.School;
 import com.autoever.recall.user.domain.User;
 import com.autoever.recall.userschool.domain.UserSchool;
 
-public record SchoolMemberResponse(
+public record SchoolMemberDto(
         Long id,
         String name,
         String phone,
@@ -13,7 +14,7 @@ public record SchoolMemberResponse(
         String middleSchoolName,
         String highSchoolName
 ) {
-    public static SchoolMemberResponse from(UserSchool targetUserSchool) {
+    public static SchoolMemberDto from(UserSchool targetUserSchool) {
         User user = targetUserSchool.getUser();
         String elementary = null;
         String middle = null;
@@ -21,7 +22,7 @@ public record SchoolMemberResponse(
 
         // Fetch Join으로 이미 로딩된 데이터이므로 추가 쿼리 없이 순회 가능
         for (UserSchool us : user.getUserSchools()) {
-            var school = us.getSchool();
+            School school = us.getSchool();
             if (school == null) continue;
 
             switch (school.getType()) {
@@ -31,7 +32,7 @@ public record SchoolMemberResponse(
             }
         }
 
-        return new SchoolMemberResponse(
+        return new SchoolMemberDto(
                 user.getId(),
                 user.getName(),
                 user.getPhone(),

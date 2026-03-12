@@ -1,6 +1,5 @@
 package com.autoever.recall.user.service;
 
-import com.autoever.recall.school.domain.SchoolType;
 import com.autoever.recall.user.domain.*;
 import com.autoever.recall.userschool.domain.UserSchool;
 
@@ -20,7 +19,7 @@ public interface UserService {
 
     User updateUser(UserUpdateCommand command);
 
-    UserSchool connectUserAndSchool(SchoolType type, UserSchoolConnectCommand command);
+    UserSchool connectUserAndSchool(UserSchoolConnectCommand command);
 
     UserSchool createSchoolAndConnectUser(UserSchoolCreateCommand command);
 }

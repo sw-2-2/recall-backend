@@ -1,5 +1,6 @@
 package com.autoever.recall.user.dto;
 
+import com.autoever.recall.school.dto.SchoolTypeDto;
 import com.autoever.recall.user.domain.UserSchoolConnectCommand;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -14,7 +15,7 @@ public record UserSchoolConnectRequest(
         @Min(value = 1_920, message = "졸업년도는 1920년 미만일 수 없습니다")
         Integer graduationYear
 ) {
-        public UserSchoolConnectCommand toDomain() {
-                return new UserSchoolConnectCommand(id, graduationYear);
+        public UserSchoolConnectCommand toDomain(SchoolTypeDto type) {
+                return new UserSchoolConnectCommand(id, graduationYear, type.toDomain());
         }
 }

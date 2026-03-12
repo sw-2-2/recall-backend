@@ -2,7 +2,6 @@ package com.autoever.recall.user.service;
 
 import com.autoever.recall.school.domain.School;
 import com.autoever.recall.school.domain.SchoolCreateCommand;
-import com.autoever.recall.school.domain.SchoolType;
 import com.autoever.recall.school.service.SchoolService;
 import com.autoever.recall.user.domain.*;
 import com.autoever.recall.user.repository.UserRepository;
@@ -67,10 +66,10 @@ public class UserServiceImpl implements UserService {
      * */
     @Override
     @Transactional
-    public UserSchool connectUserAndSchool(SchoolType type, UserSchoolConnectCommand command) {
+    public UserSchool connectUserAndSchool(UserSchoolConnectCommand command) {
         User user = getUser();
-        if (user.hasSchoolType(type)) {
-            throw new IllegalStateException("이미 해당 유형의 학교와 연결되어 있습니다. type: " + type);
+        if (user.hasSchoolType(command.type())) {
+            throw new IllegalStateException("이미 해당 유형의 학교와 연결되어 있습니다. type: " + command.type());
         }
         School school = schoolService.getSchool(command.id());
         UserSchool userSchool = UserSchool.builder()

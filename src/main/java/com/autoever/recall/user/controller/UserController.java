@@ -1,6 +1,5 @@
 package com.autoever.recall.user.controller;
 
-import com.autoever.recall.school.domain.SchoolType;
 import com.autoever.recall.school.dto.SchoolTypeDto;
 import com.autoever.recall.user.domain.*;
 import com.autoever.recall.user.dto.*;
@@ -44,9 +43,9 @@ public class UserController {
             @PathVariable String type,
             @RequestBody @Valid UserSchoolConnectRequest request
     ) {
-        SchoolType schoolType = SchoolTypeDto.fromKey(type).toDomain();
-        UserSchoolConnectCommand command = request.toDomain();
-        UserSchoolDto response = UserSchoolDto.from(userService.connectUserAndSchool(schoolType, command));
+        SchoolTypeDto schoolType = SchoolTypeDto.fromKey(type);
+        UserSchoolConnectCommand command = request.toDomain(schoolType);
+        UserSchoolDto response = UserSchoolDto.from(userService.connectUserAndSchool(command));
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

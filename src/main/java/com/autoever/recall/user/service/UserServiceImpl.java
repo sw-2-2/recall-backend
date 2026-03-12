@@ -89,13 +89,13 @@ public class UserServiceImpl implements UserService {
     * */
     @Override
     @Transactional
-    public UserSchool createSchoolAndConnectUser(SchoolType type, UserSchoolCreateCommand command) {
+    public UserSchool createSchoolAndConnectUser(UserSchoolCreateCommand command) {
         User user = getUser();
-        if (user.hasSchoolType(type)) {
-            throw new IllegalStateException("이미 해당 유형의 학교와 연결되어 있습니다. type: " + type);
+        if (user.hasSchoolType(command.type())) {
+            throw new IllegalStateException("이미 해당 유형의 학교와 연결되어 있습니다. type: " + command.type());
         }
         School school = schoolService.createSchool(
-                new SchoolCreateCommand(command.name(), type, command.address())
+                new SchoolCreateCommand(command.name(), command.type(), command.address())
         );
         UserSchool userSchool = UserSchool.builder()
                 .user(user)

@@ -9,9 +9,6 @@ public record UserSchoolCreateRequest(
         @Size(max = 30, message = "학교 이름은 최대 30자입니다")
         String name,
 
-        @NotBlank(message = "학교 타입은 필수값입니다")
-        String type,
-
         @Size(max = 255, message = "주소는 최대 255자입니다")
         String address,
 
@@ -20,10 +17,10 @@ public record UserSchoolCreateRequest(
         @Min(value = 1_920, message = "졸업년도는 1920년 미만일 수 없습니다")
         Integer graduationYear
 ) {
-        public UserSchoolCreateCommand toDomain() {
+        public UserSchoolCreateCommand toDomain(SchoolTypeDto type) {
                 return new UserSchoolCreateCommand(
                         name.trim(),
-                        SchoolTypeDto.fromKey(type).toDomain(),
+                        type.toDomain(),
                         address.trim(),
                         graduationYear
                 );

@@ -22,5 +22,5 @@ public interface UserService {
 
     UserSchool connectUserAndSchool(SchoolType type, UserSchoolConnectCommand command);
 
-    UserSchool createSchoolAndConnectUser(SchoolType type, UserSchoolCreateCommand command);
+    UserSchool createSchoolAndConnectUser(UserSchoolCreateCommand command);
 }

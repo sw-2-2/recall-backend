@@ -1,9 +1,9 @@
-package com.autoever.recall.school.dto;
+package com.autoever.recall.user.dto;
 
 import com.autoever.recall.user.domain.User;
 import com.autoever.recall.userschool.domain.UserSchool;
 
-public record SchoolMemberResponse(
+public record SchoolMemberDto(
         Long id,
         String name,
         String phone,
@@ -13,7 +13,7 @@ public record SchoolMemberResponse(
         String middleSchoolName,
         String highSchoolName
 ) {
-    public static SchoolMemberResponse from(UserSchool targetUserSchool) {
+    public static SchoolMemberDto from(UserSchool targetUserSchool) {
         User user = targetUserSchool.getUser();
         String elementary = null;
         String middle = null;
@@ -31,7 +31,7 @@ public record SchoolMemberResponse(
             }
         }
 
-        return new SchoolMemberResponse(
+        return new SchoolMemberDto(
                 user.getId(),
                 user.getName(),
                 user.getPhone(),

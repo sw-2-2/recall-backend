@@ -4,8 +4,6 @@ import com.autoever.recall.school.domain.School;
 import com.autoever.recall.school.domain.SchoolType;
 import com.autoever.recall.school.dto.*;
 import com.autoever.recall.school.service.SchoolService;
-import com.autoever.recall.user.dto.SchoolMemberDto;
-import com.autoever.recall.user.dto.SchoolMembersResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -39,19 +37,6 @@ public class SchoolController {
 
         List<School> schools = schoolService.searchSchools(params.keyword(), params.isAllType(), type);
         return ResponseEntity.ok(SchoolsResponse.from(schools));
-    }
-
-    // 학교 멤버 리스트 조회
-    @GetMapping("/{id}/members")
-    public ResponseEntity<SchoolMembersResponse> getSchoolMembers(@PathVariable("id") Long id) {
-        List<SchoolMemberDto> userSchools = schoolService.getSchoolMembers(id)
-                                                         .stream()
-                                                         .map(SchoolMemberDto::from)
-                                                         .toList();
-
-        SchoolMembersResponse response = new SchoolMembersResponse(userSchools);
-
-        return ResponseEntity.ok(response);
     }
 
     // 학교 세부정보 조회

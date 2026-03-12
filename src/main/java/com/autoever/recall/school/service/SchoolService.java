@@ -2,7 +2,6 @@ package com.autoever.recall.school.service;
 
 import com.autoever.recall.school.domain.School;
 import com.autoever.recall.school.domain.SchoolType;
-import com.autoever.recall.userschool.domain.UserSchool;
 
 import java.util.List;
 
@@ -12,9 +11,6 @@ public interface SchoolService {
 
     // 키워드 없이 타입으로만 필터링 (기본값 all)
     List<School> getSchools(boolean isAllType, SchoolType type);
-
-    // 특정 학교의 멤버 리스트 조회
-    List<UserSchool> getSchoolMembers(Long schoolId);
 
     // 학교 세부정보 조회
     School getSchool(Long schoolId);

@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface UserSchoolRepository extends JpaRepository<UserSchool, Long> {
-    // 학교 멤버 리스트 조회
+    // 학교 ID로 멤버 리스트 조회
     @Query("SELECT DISTINCT us FROM UserSchool us " +
             "JOIN FETCH us.user u " +
             "JOIN FETCH u.userSchools uss " +

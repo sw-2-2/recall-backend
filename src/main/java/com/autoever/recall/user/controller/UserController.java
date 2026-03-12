@@ -16,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
@@ -50,5 +52,16 @@ public class UserController {
 
         UserSchool userSchool = userSchoolService.getMySchool(schoolType);
         return ResponseEntity.ok(UserSchoolDto.from(userSchool));
+    }
+
+    @GetMapping("/schools/{id}/members")
+    public ResponseEntity<SchoolMembersResponse> getMySchoolMembers(@PathVariable("id") Long id) {
+        List<UserSchool> members = userService.getMySchoolMembers(id);
+
+        List<SchoolMemberDto> memberDtos = members.stream()
+                                                  .map(SchoolMemberDto::from)
+                                                  .toList();
+
+        return ResponseEntity.ok(new SchoolMembersResponse(memberDtos));
     }
 }

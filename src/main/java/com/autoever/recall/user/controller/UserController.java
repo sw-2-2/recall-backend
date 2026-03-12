@@ -56,11 +56,13 @@ public class UserController {
     @GetMapping("/schools/{id}/members")
     public ResponseEntity<SchoolMembersResponse> getMySchoolMembers(@PathVariable("id") Long id) {
         List<SchoolMemberDto> memberDtos = userService.getMySchoolMembers(id)
-                                                      .stream()
-                                                      .map(SchoolMemberDto::from)
-                                                      .toList();
+                .stream()
+                .map(SchoolMemberDto::from)
+                .toList();
 
         return ResponseEntity.ok(SchoolMembersResponse.from(memberDtos));
+    }
+
     @PostMapping("/schools/{type}/connect")
     public ResponseEntity<UserSchoolDto> connectUserAndSchool(
             @PathVariable String type,

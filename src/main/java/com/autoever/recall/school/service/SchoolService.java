@@ -15,4 +15,7 @@ public interface SchoolService {
 
     // 특정 학교의 멤버 리스트 조회
     List<UserSchool> getSchoolMembers(Long schoolId);
+
+    // 학교 세부정보 조회
+    School getSchool(Long schoolId);
 }

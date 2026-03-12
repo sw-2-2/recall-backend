@@ -5,6 +5,7 @@ import com.autoever.recall.school.domain.SchoolType;
 import com.autoever.recall.school.repository.SchoolRepository;
 import com.autoever.recall.userschool.domain.UserSchool;
 import com.autoever.recall.userschool.repository.UserSchoolRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,5 +38,11 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public List<UserSchool> getSchoolMembers(Long schoolId) {
         return userSchoolRepository.findAllMembersWithDetails(schoolId);
+    }
+
+    @Override
+    public School getSchool(Long schoolId) {
+        return schoolRepository.findById(schoolId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 학교를 찾을 수 없습니다. ID: " + schoolId));
     }
 }

@@ -1,7 +1,5 @@
-package com.autoever.recall.global;
+package com.autoever.recall.global.exception;
 
-import com.autoever.recall.global.dto.ErrorDetailDto;
-import com.autoever.recall.global.dto.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;

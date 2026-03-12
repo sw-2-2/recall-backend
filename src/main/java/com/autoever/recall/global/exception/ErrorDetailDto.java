@@ -1,4 +1,4 @@
-package com.autoever.recall.global.dto;
+package com.autoever.recall.global.exception;
 
 public record ErrorDetailDto(
         String field,

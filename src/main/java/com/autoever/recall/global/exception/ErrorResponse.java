@@ -1,4 +1,4 @@
-package com.autoever.recall.global.dto;
+package com.autoever.recall.global.exception;
 
 import java.time.LocalDateTime;
 import java.util.List;

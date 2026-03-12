@@ -4,5 +4,5 @@ public record SchoolCreateCommand(
         String name,
         SchoolType type,
         String address
-) implements SchoolCommandContent {
+) {
 }

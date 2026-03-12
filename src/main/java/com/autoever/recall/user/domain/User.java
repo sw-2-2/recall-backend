@@ -1,5 +1,6 @@
 package com.autoever.recall.user.domain;
 
+import com.autoever.recall.school.domain.SchoolType;
 import com.autoever.recall.userschool.domain.UserSchool;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -57,5 +58,21 @@ public class User {
         this.name = command.name();
         this.phone = command.phone();
         this.address = command.address();
+    }
+
+    public boolean hasSchoolType(SchoolType type) {
+        return userSchools.stream()
+                .map(UserSchool::getSchool)
+                .anyMatch(it -> it.getType().equals(type));
+    }
+
+    public void addUserSchool(UserSchool userSchool) {
+        if (this.userSchools.contains(userSchool)) {
+            return;
+        }
+        this.userSchools.add(userSchool);
+        if (userSchool.getUser() != this) {
+            userSchool.updateUser(this);
+        }
     }
 }

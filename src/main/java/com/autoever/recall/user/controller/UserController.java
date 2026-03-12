@@ -1,10 +1,10 @@
 package com.autoever.recall.user.controller;
 
-import com.autoever.recall.user.domain.User;
-import com.autoever.recall.user.domain.UserCreateCommand;
-import com.autoever.recall.user.domain.UserUpdateCommand;
+import com.autoever.recall.school.dto.SchoolTypeDto;
+import com.autoever.recall.user.domain.*;
 import com.autoever.recall.user.dto.*;
 import com.autoever.recall.user.service.UserService;
+import com.autoever.recall.userschool.dto.UserSchoolDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -36,5 +36,27 @@ public class UserController {
         UserUpdateCommand command = request.toDomain();
         UserUpdateResponse response = UserUpdateResponse.from(userService.updateUser(command));
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/schools/{type}/connect")
+    public ResponseEntity<UserSchoolDto> connectUserAndSchool(
+            @PathVariable String type,
+            @RequestBody @Valid UserSchoolConnectRequest request
+    ) {
+        SchoolTypeDto schoolType = SchoolTypeDto.fromKey(type);
+        UserSchoolConnectCommand command = request.toDomain(schoolType);
+        UserSchoolDto response = UserSchoolDto.from(userService.connectUserAndSchool(command));
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PostMapping("/schools/{type}/new")
+    public ResponseEntity<UserSchoolDto> createSchoolAndConnectUser(
+            @PathVariable String type,
+            @RequestBody @Valid UserSchoolCreateRequest request
+    ) {
+        SchoolTypeDto schoolType = SchoolTypeDto.fromKey(type);
+        UserSchoolCreateCommand command = request.toDomain(schoolType);
+        UserSchoolDto response = UserSchoolDto.from(userService.createSchoolAndConnectUser(command));
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

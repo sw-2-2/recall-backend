@@ -8,6 +8,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "user_schools")
@@ -36,4 +37,21 @@ public class UserSchool {
     @CreatedDate
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
+
+    public void updateUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof UserSchool us)) return false;
+        return Objects.equals(getUser().getId(), us.getUser().getId()) &&
+                Objects.equals(getSchool().getId(), us.getSchool().getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUser().getId(), getSchool().getId());
+    }
 }

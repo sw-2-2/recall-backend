@@ -1,5 +1,6 @@
 package com.autoever.recall.school.service;
 
+import com.autoever.recall.school.domain.SchoolCreateCommand;
 import com.autoever.recall.school.domain.School;
 import com.autoever.recall.school.domain.SchoolType;
 import com.autoever.recall.userschool.domain.UserSchool;
@@ -15,4 +16,15 @@ public interface SchoolService {
 
     // 특정 학교의 멤버 리스트 조회
     List<UserSchool> getSchoolMembers(Long schoolId);
+
+    /*
+    * 특정 학교 조회 (Fetch Join 없이)
+    * 없으면 내부적으로 exception throw
+    * */
+    School getSchool(Long schoolId);
+
+    /*
+    * 학교 생성
+    * */
+    School createSchool(SchoolCreateCommand command);
 }

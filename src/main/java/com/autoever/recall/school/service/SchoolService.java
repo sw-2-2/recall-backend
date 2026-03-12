@@ -1,6 +1,6 @@
 package com.autoever.recall.school.service;
 
-import com.autoever.recall.school.domain.CreateSchoolCommand;
+import com.autoever.recall.school.domain.SchoolCreateCommand;
 import com.autoever.recall.school.domain.School;
 import com.autoever.recall.school.domain.SchoolType;
 import com.autoever.recall.userschool.domain.UserSchool;
@@ -26,5 +26,5 @@ public interface SchoolService {
     /*
     * 학교 생성
     * */
-    School createSchool(CreateSchoolCommand command);
+    School createSchool(SchoolCreateCommand command);
 }

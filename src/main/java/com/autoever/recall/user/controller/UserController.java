@@ -47,7 +47,7 @@ public class UserController {
     }
 
     @GetMapping("/schools/{type}")
-    public ResponseEntity<UserSchoolDto> getMySchool(@PathVariable(value = "type", required = true) String type) {
+    public ResponseEntity<UserSchoolDto> getMySchool(@PathVariable(value = "type") String type) {
         SchoolType schoolType = SchoolTypeDto.fromKey(type).toDomain();
 
         UserSchool userSchool = userSchoolService.getMySchool(schoolType);

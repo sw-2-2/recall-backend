@@ -5,6 +5,9 @@ import com.autoever.recall.school.domain.SchoolCreateCommand;
 import com.autoever.recall.school.service.SchoolService;
 import com.autoever.recall.user.domain.*;
 import com.autoever.recall.user.repository.UserRepository;
+import com.autoever.recall.user.service.exception.DuplicateEmailException;
+import com.autoever.recall.user.service.exception.UserNotFoundException;
+import com.autoever.recall.user.service.exception.UserSchoolAlreadyExistsException;
 import com.autoever.recall.userschool.domain.UserSchool;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +24,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User createUser(String email, UserCreateCommand command) {
         if (userRepository.existsByEmail(email)) {
-            throw new IllegalStateException("이미 존재하는 유저입니다. email:" + email);
+            throw new DuplicateEmailException("같은 이름의 회원이 존재합니다");
         }
         User user = User.builder()
                 .email(email)
@@ -37,18 +40,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByEmail(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalStateException("해당하는 유저를 찾을 수 없습니다. email: " + email));
+                .orElseThrow(() -> new UserNotFoundException("요청한 회원을 찾을 수 없습니다"));
     }
 
     private User findById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("해당하는 유저를 찾을 수 없습니다. id: " + id));
+                .orElseThrow(() -> new UserNotFoundException("요청한 회원을 찾을 수 없습니다"));
     }
 
     @Override
     public User getUser() {
         return userRepository.findByIdWithSchools(1L) // TODO: JWT로 email로 조회
-                .orElseThrow(() -> new IllegalStateException("해당하는 유저를 찾을 수 없습니다. id: " + 1L));
+                .orElseThrow(() -> new UserNotFoundException("요청한 회원을 찾을 수 없습니다"));
     }
 
     @Override
@@ -69,7 +72,7 @@ public class UserServiceImpl implements UserService {
     public UserSchool connectUserAndSchool(UserSchoolConnectCommand command) {
         User user = getUser();
         if (user.hasSchoolType(command.type())) {
-            throw new IllegalStateException("이미 해당 유형의 학교와 연결되어 있습니다. type: " + command.type());
+            throw new UserSchoolAlreadyExistsException("이미 해당 유형의 학교와 연결되어 있습니다");
         }
         School school = schoolService.getSchool(command.id());
         UserSchool userSchool = UserSchool.builder()
@@ -91,7 +94,7 @@ public class UserServiceImpl implements UserService {
     public UserSchool createSchoolAndConnectUser(UserSchoolCreateCommand command) {
         User user = getUser();
         if (user.hasSchoolType(command.type())) {
-            throw new IllegalStateException("이미 해당 유형의 학교와 연결되어 있습니다. type: " + command.type());
+            throw new UserSchoolAlreadyExistsException("이미 해당 유형의 학교와 연결되어 있습니다");
         }
         School school = schoolService.createSchool(
                 new SchoolCreateCommand(command.name(), command.type(), command.address())

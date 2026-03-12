@@ -1,6 +1,7 @@
 package com.autoever.recall.school.service;
 
 import com.autoever.recall.school.domain.School;
+import com.autoever.recall.school.domain.SchoolCreateCommand;
 import com.autoever.recall.school.domain.SchoolType;
 import com.autoever.recall.school.repository.SchoolRepository;
 import com.autoever.recall.userschool.domain.UserSchool;
@@ -37,5 +38,22 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public List<UserSchool> getSchoolMembers(Long schoolId) {
         return userSchoolRepository.findAllMembersWithDetails(schoolId);
+    }
+
+    @Override
+    public School getSchool(Long schoolId) {
+        return schoolRepository.findById(schoolId)
+                .orElseThrow(() -> new IllegalStateException("해당하는 학교를 찾을 수 없습니다. id: " + schoolId));
+    }
+
+    @Override
+    @Transactional
+    public School createSchool(SchoolCreateCommand command) {
+        School school = School.builder()
+                .name(command.name())
+                .type(command.type())
+                .address(command.address())
+                .build();
+        return schoolRepository.save(school);
     }
 }

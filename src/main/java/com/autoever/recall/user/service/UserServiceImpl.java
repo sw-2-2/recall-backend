@@ -1,10 +1,11 @@
 package com.autoever.recall.user.service;
 
-import com.autoever.recall.user.domain.User;
-import com.autoever.recall.user.domain.UserCreateCommand;
-import com.autoever.recall.user.domain.UserRole;
-import com.autoever.recall.user.domain.UserUpdateCommand;
+import com.autoever.recall.school.domain.School;
+import com.autoever.recall.school.domain.SchoolType;
+import com.autoever.recall.school.service.SchoolService;
+import com.autoever.recall.user.domain.*;
 import com.autoever.recall.user.repository.UserRepository;
+import com.autoever.recall.userschool.domain.UserSchool;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final SchoolService schoolService;
 
     @Override
     @Transactional
@@ -54,6 +56,28 @@ public class UserServiceImpl implements UserService {
     public User updateUser(UserUpdateCommand command) {
         User user = findById(1L); // TODO: JWT로 email로 조회
         user.update(command);
+        return user;
+    }
+
+    /*
+    * 1. User가 이미 type의 학교를 갖고 있는지 검사
+    * 2. 연결할 학교가 존재하는 지 검사
+    * 3. UserSchool을 생성 후 연결
+    * */
+    @Override
+    @Transactional
+    public User connectUserAndSchool(UserSchoolConnectCommand command, SchoolType type) {
+        User user = getUser();
+        if (user.hasSchoolType(type)) {
+            throw new IllegalStateException("이미 해당 유형의 학교와 연결되어 있습니다. type: " + type);
+        }
+        School school = schoolService.getSchool(command.id());
+        UserSchool userSchool = UserSchool.builder()
+                .user(user)
+                .school(school)
+                .graduationYear(command.graduationYear())
+                .build();
+        user.addUserSchool(userSchool);
         return user;
     }
 }

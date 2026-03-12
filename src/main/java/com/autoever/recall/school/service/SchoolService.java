@@ -15,4 +15,10 @@ public interface SchoolService {
 
     // 특정 학교의 멤버 리스트 조회
     List<UserSchool> getSchoolMembers(Long schoolId);
+
+    /*
+    * 특정 학교 조회 (Fetch Join 없이)
+    * 없으면 내부적으로 exception throw
+    * */
+    School getSchool(Long schoolId);
 }

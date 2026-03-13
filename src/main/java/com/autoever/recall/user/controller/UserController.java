@@ -24,23 +24,13 @@ public class UserController {
     private final UserService userService;
     private final UserSchoolService userSchoolService;
 
-    @PostMapping
+    @PostMapping("/signup")
     public ResponseEntity<UserCreateResponse> createUser(@RequestBody @Valid UserCreateRequest request) {
         UserCreateCommand command = request.toDomain();
         User user = userService.createUser(command);
         UserCreateResponse response = UserCreateResponse.from(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-
-//    @PostMapping("/login")
-//    public ResponseEntity<UserLoginResponse> loginUser(@RequestBody @Valid UserLoginRequest request) {
-//        User user = userService.loginUser(request.email(), request.password()); // 위 회원가입 코드와 동일한 이유
-//
-//        // 추후: 쿠키 생성 (SESSIONID라는 이름으로 쿠키 생성)
-//
-//        UserLoginResponse response = UserLoginResponse.from(user);
-//        return ResponseEntity.status(HttpStatus.OK).body(response); // 추후: 헤더에 쿠키 설정하기
-//    }
 
     @GetMapping("/me")
     public ResponseEntity<UserResponse> getUser() {

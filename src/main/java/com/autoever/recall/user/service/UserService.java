@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface UserService {
     User createUser(UserCreateCommand command); // TODO: JWT 이후 email 빼기
-
     /*
     * UserSchool 미포함
     * */

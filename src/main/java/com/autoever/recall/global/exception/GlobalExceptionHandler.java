@@ -1,6 +1,7 @@
 package com.autoever.recall.global.exception;
 
 import com.autoever.recall.auth.service.exception.UnAuthorizedException;
+import com.autoever.recall.school.service.exception.InvalidSchoolTypeKeyException;
 import com.autoever.recall.school.service.exception.SchoolNotFoundException;
 import com.autoever.recall.user.service.exception.DuplicateEmailException;
 import com.autoever.recall.user.service.exception.UserNotEnrolledException;
@@ -66,6 +67,14 @@ public class GlobalExceptionHandler {
 
         ErrorResponse response = ErrorResponse.of("SCHOOL_NOT_FOUND", e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler(InvalidSchoolTypeKeyException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidSchoolTypeKeyException(InvalidSchoolTypeKeyException e) {
+        log.warn("[INVALID_SCHOOL_TYPE] type: {}", e.getKey());
+
+        ErrorResponse response = ErrorResponse.of("INVALID_SCHOOL_TYPE", e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
   
     @ExceptionHandler(UnAuthorizedException.class)

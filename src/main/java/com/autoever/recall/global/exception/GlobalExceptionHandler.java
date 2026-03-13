@@ -1,5 +1,6 @@
 package com.autoever.recall.global.exception;
 
+import com.autoever.recall.auth.service.exception.UnAuthorizedException;
 import com.autoever.recall.user.service.exception.DuplicateEmailException;
 import com.autoever.recall.user.service.exception.UserNotFoundException;
 import com.autoever.recall.user.service.exception.UserSchoolAlreadyExistsException;
@@ -39,8 +40,16 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
+    @ExceptionHandler(UnAuthorizedException.class)
+    public ResponseEntity<ErrorResponse> handleUnAuthorizedException(UnAuthorizedException e) {
+        log.warn("[USER_UNAUTHORIZED]");
+
+        ErrorResponse response = ErrorResponse.of("USER_UNAUTHORIZED", e.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    protected ResponseEntity<ErrorResponse> handleArgumentValidException(MethodArgumentNotValidException e) {
+    public ResponseEntity<ErrorResponse> handleArgumentValidException(MethodArgumentNotValidException e) {
         String firstErrorMessage = e.getBindingResult().getFieldErrors().get(0).getDefaultMessage();
         log.warn("Validation failed: {}", firstErrorMessage);
 
@@ -54,7 +63,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    protected ResponseEntity<ErrorResponse> handleServerException(Exception e) {
+    public ResponseEntity<ErrorResponse> handleServerException(Exception e) {
         log.error("Internal Server Error: ", e);
 
         ErrorResponse response = ErrorResponse.of("SERVER_ERROR", "서버 내부 오류가 발생했습니다");

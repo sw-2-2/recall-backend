@@ -4,8 +4,7 @@ import com.autoever.recall.school.domain.School;
 import com.autoever.recall.school.domain.SchoolCreateCommand;
 import com.autoever.recall.school.domain.SchoolType;
 import com.autoever.recall.school.repository.SchoolRepository;
-import com.autoever.recall.userschool.domain.UserSchool;
-import jakarta.persistence.EntityNotFoundException;
+import com.autoever.recall.school.service.exception.SchoolNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,8 +35,8 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public School getSchool(Long schoolId) {
-        return schoolRepository.findById(schoolId)
-                .orElseThrow(() -> new EntityNotFoundException("해당 학교를 찾을 수 없습니다. ID: " + schoolId));
+        checkSchoolExists(schoolId);
+        return schoolRepository.findById(schoolId).get();
     }
 
     @Override
@@ -49,5 +48,14 @@ public class SchoolServiceImpl implements SchoolService {
                 .address(command.address())
                 .build();
         return schoolRepository.save(school);
+    }
+
+    @Override
+    public boolean checkSchoolExists(Long schoolId) {
+        boolean exists = schoolRepository.existsById(schoolId);
+        if (!exists) {
+            throw new SchoolNotFoundException(schoolId);
+        }
+        return true;
     }
 }

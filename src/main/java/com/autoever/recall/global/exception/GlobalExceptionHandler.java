@@ -7,6 +7,7 @@ import com.autoever.recall.user.service.exception.UserSchoolAlreadyExistsExcepti
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -42,9 +43,17 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UnAuthorizedException.class)
     public ResponseEntity<ErrorResponse> handleUnAuthorizedException(UnAuthorizedException e) {
-        log.warn("[USER_UNAUTHORIZED]");
+        log.warn("[AUTH_UNAUTHORIZED]");
 
-        ErrorResponse response = ErrorResponse.of("USER_UNAUTHORIZED", e.getMessage());
+        ErrorResponse response = ErrorResponse.of("AUTH_UNAUTHORIZED", e.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handleBadCredentials(BadCredentialsException e) {
+        log.warn("[AUTH_BAD_CREDENTIAL]");
+
+        ErrorResponse response = ErrorResponse.of("AUTH_BAD_CREDENTIAL", "아이디 또는 비밀번호가 잘못되었습니다.");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 

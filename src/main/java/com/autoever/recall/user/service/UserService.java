@@ -6,7 +6,7 @@ import com.autoever.recall.userschool.domain.UserSchool;
 import java.util.List;
 
 public interface UserService {
-    User createUser(String email, String password, UserCreateCommand command); // TODO: JWT 이후 email 빼기
+    User createUser(UserCreateCommand command); // TODO: JWT 이후 email 빼기
 
     /*
     * UserSchool 미포함

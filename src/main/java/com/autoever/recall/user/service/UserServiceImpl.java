@@ -27,12 +27,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User createUser(String email, String password, UserCreateCommand command) { // password 암호화(BCrypt 등) 필요
-        if (userRepository.existsByEmail(email)) {
-            throw new DuplicateEmailException(email);
+    public User createUser(UserCreateCommand command) {
+        if (userRepository.existsByEmail(command.email())) {
+            throw new DuplicateEmailException(command.email());
         }
-        User user = User.builder()
-                .email(email)
+        User user = User.builder() // password 암호화(BCrypt 등) 필요
+                .email(command.email())
                 .role(UserRole.USER)
                 .name(command.name())
                 .phone(command.phone())
@@ -41,6 +41,10 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         return user;
     }
+
+//    @Override
+//    public User loginUser(String email, String)
+
 
     @Override
     public User findByEmail(String email) {

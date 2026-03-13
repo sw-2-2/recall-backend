@@ -28,6 +28,8 @@ public record UserCreateRequest(
 ) {
     public UserCreateCommand toDomain() {
         return new UserCreateCommand(
+                email,
+                password,
                 name.trim(),
                 phone,
                 address != null ? address.trim() : null

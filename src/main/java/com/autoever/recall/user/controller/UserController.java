@@ -2,13 +2,13 @@ package com.autoever.recall.user.controller;
 
 
 import com.autoever.recall.school.domain.SchoolType;
-import com.autoever.recall.userschool.domain.UserSchool;
-import com.autoever.recall.userschool.service.UserSchoolService;
 import com.autoever.recall.school.dto.SchoolTypeDto;
 import com.autoever.recall.user.domain.*;
 import com.autoever.recall.user.dto.*;
 import com.autoever.recall.user.service.UserService;
+import com.autoever.recall.userschool.domain.UserSchool;
 import com.autoever.recall.userschool.dto.UserSchoolDto;
+import com.autoever.recall.userschool.service.UserSchoolService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,10 +27,20 @@ public class UserController {
     @PostMapping
     public ResponseEntity<UserCreateResponse> createUser(@RequestBody @Valid UserCreateRequest request) {
         UserCreateCommand command = request.toDomain();
-        User user = userService.createUser(request.email(), request.password(), command); // 변경될 속성 제외하기 위해 password 별도
+        User user = userService.createUser(command);
         UserCreateResponse response = UserCreateResponse.from(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+//    @PostMapping("/login")
+//    public ResponseEntity<UserLoginResponse> loginUser(@RequestBody @Valid UserLoginRequest request) {
+//        User user = userService.loginUser(request.email(), request.password()); // 위 회원가입 코드와 동일한 이유
+//
+//        // 추후: 쿠키 생성 (SESSIONID라는 이름으로 쿠키 생성)
+//
+//        UserLoginResponse response = UserLoginResponse.from(user);
+//        return ResponseEntity.status(HttpStatus.OK).body(response); // 추후: 헤더에 쿠키 설정하기
+//    }
 
     @GetMapping("/me")
     public ResponseEntity<UserResponse> getUser() {

@@ -1,5 +1,6 @@
 package com.autoever.recall.user.service;
 
+import com.autoever.recall.auth.service.SecuritySessionService;
 import com.autoever.recall.school.domain.School;
 import com.autoever.recall.school.domain.SchoolCreateCommand;
 import com.autoever.recall.school.service.SchoolService;
@@ -12,6 +13,7 @@ import com.autoever.recall.user.service.exception.UserSchoolAlreadyExistsExcepti
 import com.autoever.recall.userschool.domain.UserSchool;
 import com.autoever.recall.userschool.service.UserSchoolService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,17 +24,23 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final SecuritySessionService securitySessionService;
     private final UserSchoolService userSchoolService;
     private final SchoolService schoolService;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
-    public User createUser(String email, UserCreateCommand command) {
-        if (userRepository.existsByEmail(email)) {
-            throw new DuplicateEmailException(email);
+    public User createUser(UserCreateCommand command) {
+        if (userRepository.existsByEmail(command.email())) {
+            throw new DuplicateEmailException(command.email());
         }
+
+        String encodedPassword = passwordEncoder.encode(command.password());
+
         User user = User.builder()
-                .email(email)
+                .email(command.email())
+                .password(encodedPassword)
                 .role(UserRole.USER)
                 .name(command.name())
                 .phone(command.phone())
@@ -55,27 +63,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUser() {
-        return userRepository.findByIdWithSchools(1L) // TODO: JWT로 email로 조회
-                .orElseThrow(() -> new UserNotFoundException("1"));
+        Long id = securitySessionService.getSessionUserId();
+        return userRepository.findByIdWithSchools(id)
+                .orElseThrow(() -> new UserNotFoundException(id.toString()));
     }
 
     @Override
     @Transactional
     public User updateUser(UserUpdateCommand command) {
-        User user = findById(1L); // TODO: JWT로 email로 조회
+        Long id = securitySessionService.getSessionUserId();
+        User user = findById(id);
         user.update(command);
         return user;
     }
 
     @Override
     public List<UserSchool> getMySchoolMembers(Long schoolId) {
-        Long tempUserId = 1L; // JWT 전 임시 지정
-
+        Long id = securitySessionService.getSessionUserId();
         schoolService.checkSchoolExists(schoolId);
 
-        boolean isEnrolled = userRepository.isUserEnrolledInSchool(tempUserId, schoolId);
+        boolean isEnrolled = userRepository.isUserEnrolledInSchool(id, schoolId);
         if(!isEnrolled) {
-            throw new UserNotEnrolledException(tempUserId, schoolId);
+            throw new UserNotEnrolledException(id, schoolId);
         }
 
         return userSchoolService.getSchoolMembers(schoolId);

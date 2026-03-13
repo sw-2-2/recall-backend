@@ -1,5 +1,6 @@
 package com.autoever.recall.global.exception;
 
+import com.autoever.recall.auth.service.exception.UnAuthorizedException;
 import com.autoever.recall.school.service.exception.SchoolNotFoundException;
 import com.autoever.recall.user.service.exception.DuplicateEmailException;
 import com.autoever.recall.user.service.exception.UserNotEnrolledException;
@@ -9,6 +10,7 @@ import com.autoever.recall.userschool.service.exception.UserSchoolNotFoundExcept
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -41,7 +43,7 @@ public class GlobalExceptionHandler {
         ErrorResponse response = ErrorResponse.of("USER_SCHOOL_EXISTS", e.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
-
+  
     @ExceptionHandler(UserNotEnrolledException.class)
     public ResponseEntity<ErrorResponse> handleUserNotEnrolledException(UserNotEnrolledException e) {
         log.warn("[UserNotEnrolled] userId: {}, schoolId: {}", e.getUserId(), e.getSchoolId());
@@ -65,9 +67,25 @@ public class GlobalExceptionHandler {
         ErrorResponse response = ErrorResponse.of("SCHOOL_NOT_FOUND", e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
+  
+    @ExceptionHandler(UnAuthorizedException.class)
+    public ResponseEntity<ErrorResponse> handleUnAuthorizedException(UnAuthorizedException e) {
+        log.warn("[AUTH_UNAUTHORIZED]");
+
+        ErrorResponse response = ErrorResponse.of("AUTH_UNAUTHORIZED", e.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handleBadCredentials(BadCredentialsException e) {
+        log.warn("[AUTH_BAD_CREDENTIAL]");
+
+        ErrorResponse response = ErrorResponse.of("AUTH_BAD_CREDENTIAL", "아이디 또는 비밀번호가 잘못되었습니다");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response); 
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    protected ResponseEntity<ErrorResponse> handleArgumentValidException(MethodArgumentNotValidException e) {
+    public ResponseEntity<ErrorResponse> handleArgumentValidException(MethodArgumentNotValidException e) {
         String firstErrorMessage = e.getBindingResult().getFieldErrors().get(0).getDefaultMessage();
         log.warn("Validation failed: {}", firstErrorMessage);
 
@@ -81,7 +99,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    protected ResponseEntity<ErrorResponse> handleServerException(Exception e) {
+    public ResponseEntity<ErrorResponse> handleServerException(Exception e) {
         log.error("Internal Server Error: ", e);
 
         ErrorResponse response = ErrorResponse.of("SERVER_ERROR", "서버 내부 오류가 발생했습니다");

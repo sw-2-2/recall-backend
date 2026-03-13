@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User createUser(String email, UserCreateCommand command) {
+    public User createUser(String email, String password, UserCreateCommand command) { // password 암호화(BCrypt 등) 필요
         if (userRepository.existsByEmail(email)) {
             throw new DuplicateEmailException(email);
         }

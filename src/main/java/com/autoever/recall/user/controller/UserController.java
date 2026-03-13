@@ -27,7 +27,7 @@ public class UserController {
     @PostMapping
     public ResponseEntity<UserCreateResponse> createUser(@RequestBody @Valid UserCreateRequest request) {
         UserCreateCommand command = request.toDomain();
-        User user = userService.createUser(request.email(), command);
+        User user = userService.createUser(request.email(), request.password(), command); // 변경될 속성 제외하기 위해 password 별도
         UserCreateResponse response = UserCreateResponse.from(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

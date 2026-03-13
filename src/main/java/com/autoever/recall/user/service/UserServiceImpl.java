@@ -12,6 +12,7 @@ import com.autoever.recall.user.service.exception.UserSchoolAlreadyExistsExcepti
 import com.autoever.recall.userschool.domain.UserSchool;
 import com.autoever.recall.userschool.service.UserSchoolService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,15 +25,20 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserSchoolService userSchoolService;
     private final SchoolService schoolService;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
-    public User createUser(String email, UserCreateCommand command) {
-        if (userRepository.existsByEmail(email)) {
-            throw new DuplicateEmailException(email);
+    public User createUser(UserCreateCommand command) {
+        if (userRepository.existsByEmail(command.email())) {
+            throw new DuplicateEmailException(command.email());
         }
+
+        String encodedPassword = passwordEncoder.encode(command.password());
+
         User user = User.builder()
-                .email(email)
+                .email(command.email())
+                .password(encodedPassword)
                 .role(UserRole.USER)
                 .name(command.name())
                 .phone(command.phone())

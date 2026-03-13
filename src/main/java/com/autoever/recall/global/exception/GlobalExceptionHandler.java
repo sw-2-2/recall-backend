@@ -1,9 +1,12 @@
 package com.autoever.recall.global.exception;
 
 import com.autoever.recall.auth.service.exception.UnAuthorizedException;
+import com.autoever.recall.school.service.exception.SchoolNotFoundException;
 import com.autoever.recall.user.service.exception.DuplicateEmailException;
+import com.autoever.recall.user.service.exception.UserNotEnrolledException;
 import com.autoever.recall.user.service.exception.UserNotFoundException;
 import com.autoever.recall.user.service.exception.UserSchoolAlreadyExistsException;
+import com.autoever.recall.userschool.service.exception.UserSchoolNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +43,31 @@ public class GlobalExceptionHandler {
         ErrorResponse response = ErrorResponse.of("USER_SCHOOL_EXISTS", e.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
+  
+    @ExceptionHandler(UserNotEnrolledException.class)
+    public ResponseEntity<ErrorResponse> handleUserNotEnrolledException(UserNotEnrolledException e) {
+        log.warn("[UserNotEnrolled] userId: {}, schoolId: {}", e.getUserId(), e.getSchoolId());
 
+        ErrorResponse response = ErrorResponse.of("USER_NOT_ENROLLED", e.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+    }
+
+    @ExceptionHandler(UserSchoolNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleUserSchoolNotFoundException(UserSchoolNotFoundException e) {
+        log.warn("[UserSchoolNotFound] userId: {}, type: {}", e.getUserId(), e.getType());
+
+        ErrorResponse response = ErrorResponse.of("USER_SCHOOL_NOT_FOUND", e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler(SchoolNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleSchoolNotFoundException(SchoolNotFoundException e) {
+        log.warn("[SchoolNotFound] schoolId: {}", e.getSchoolId());
+
+        ErrorResponse response = ErrorResponse.of("SCHOOL_NOT_FOUND", e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+  
     @ExceptionHandler(UnAuthorizedException.class)
     public ResponseEntity<ErrorResponse> handleUnAuthorizedException(UnAuthorizedException e) {
         log.warn("[AUTH_UNAUTHORIZED]");
@@ -54,7 +81,7 @@ public class GlobalExceptionHandler {
         log.warn("[AUTH_BAD_CREDENTIAL]");
 
         ErrorResponse response = ErrorResponse.of("AUTH_BAD_CREDENTIAL", "아이디 또는 비밀번호가 잘못되었습니다");
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response); 
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -63,10 +90,10 @@ public class GlobalExceptionHandler {
         log.warn("Validation failed: {}", firstErrorMessage);
 
         List<ErrorDetailDto> details = e.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .map(error -> new ErrorDetailDto(error.getField(), error.getDefaultMessage()))
-                .toList();
+                                        .getFieldErrors()
+                                        .stream()
+                                        .map(error -> new ErrorDetailDto(error.getField(), error.getDefaultMessage()))
+                                        .toList();
         ErrorResponse response = ErrorResponse.of("INVALID_INPUT", "요청값이 유효하지 않습니다", details);
         return ResponseEntity.badRequest().body(response);
     }

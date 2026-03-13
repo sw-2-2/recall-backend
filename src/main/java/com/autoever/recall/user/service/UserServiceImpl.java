@@ -5,12 +5,14 @@ import com.autoever.recall.school.domain.SchoolCreateCommand;
 import com.autoever.recall.school.service.SchoolService;
 import com.autoever.recall.user.domain.*;
 import com.autoever.recall.user.repository.UserRepository;
-import com.autoever.recall.userschool.service.UserSchoolService;
 import com.autoever.recall.user.service.exception.DuplicateEmailException;
+import com.autoever.recall.user.service.exception.UserNotEnrolledException;
 import com.autoever.recall.user.service.exception.UserNotFoundException;
 import com.autoever.recall.user.service.exception.UserSchoolAlreadyExistsException;
 import com.autoever.recall.userschool.domain.UserSchool;
+import com.autoever.recall.userschool.service.UserSchoolService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,15 +25,20 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserSchoolService userSchoolService;
     private final SchoolService schoolService;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
-    public User createUser(String email, UserCreateCommand command) {
-        if (userRepository.existsByEmail(email)) {
-            throw new DuplicateEmailException(email);
+    public User createUser(UserCreateCommand command) {
+        if (userRepository.existsByEmail(command.email())) {
+            throw new DuplicateEmailException(command.email());
         }
+
+        String encodedPassword = passwordEncoder.encode(command.password());
+
         User user = User.builder()
-                .email(email)
+                .email(command.email())
+                .password(encodedPassword)
                 .role(UserRole.USER)
                 .name(command.name())
                 .phone(command.phone())
@@ -70,11 +77,11 @@ public class UserServiceImpl implements UserService {
     public List<UserSchool> getMySchoolMembers(Long schoolId) {
         Long tempUserId = 1L; // JWT 전 임시 지정
 
+        schoolService.checkSchoolExists(schoolId);
+
         boolean isEnrolled = userRepository.isUserEnrolledInSchool(tempUserId, schoolId);
         if(!isEnrolled) {
-            throw new IllegalArgumentException(
-                    String.format("사용자(ID: %d)는 해당 학교(ID: %d)의 소속이 아닙니다.", tempUserId, schoolId)
-            );
+            throw new UserNotEnrolledException(tempUserId, schoolId);
         }
 
         return userSchoolService.getSchoolMembers(schoolId);

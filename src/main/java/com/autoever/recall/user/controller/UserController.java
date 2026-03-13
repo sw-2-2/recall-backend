@@ -2,13 +2,13 @@ package com.autoever.recall.user.controller;
 
 
 import com.autoever.recall.school.domain.SchoolType;
-import com.autoever.recall.userschool.domain.UserSchool;
-import com.autoever.recall.userschool.service.UserSchoolService;
 import com.autoever.recall.school.dto.SchoolTypeDto;
 import com.autoever.recall.user.domain.*;
 import com.autoever.recall.user.dto.*;
 import com.autoever.recall.user.service.UserService;
+import com.autoever.recall.userschool.domain.UserSchool;
 import com.autoever.recall.userschool.dto.UserSchoolDto;
+import com.autoever.recall.userschool.service.UserSchoolService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,10 +24,10 @@ public class UserController {
     private final UserService userService;
     private final UserSchoolService userSchoolService;
 
-    @PostMapping
+    @PostMapping("/signup")
     public ResponseEntity<UserCreateResponse> createUser(@RequestBody @Valid UserCreateRequest request) {
         UserCreateCommand command = request.toDomain();
-        User user = userService.createUser(request.email(), command);
+        User user = userService.createUser(command);
         UserCreateResponse response = UserCreateResponse.from(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

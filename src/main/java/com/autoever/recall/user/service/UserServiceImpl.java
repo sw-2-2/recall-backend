@@ -1,6 +1,6 @@
 package com.autoever.recall.user.service;
 
-import com.autoever.recall.auth.service.AuthService;
+import com.autoever.recall.auth.service.SecuritySessionService;
 import com.autoever.recall.school.domain.School;
 import com.autoever.recall.school.domain.SchoolCreateCommand;
 import com.autoever.recall.school.service.SchoolService;
@@ -24,7 +24,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    private final AuthService authService;
+    private final SecuritySessionService securitySessionService;
     private final UserSchoolService userSchoolService;
     private final SchoolService schoolService;
     private final BCryptPasswordEncoder passwordEncoder;
@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUser() {
-        Long id = authService.getSessionUserId();
+        Long id = securitySessionService.getSessionUserId();
         return userRepository.findByIdWithSchools(id)
                 .orElseThrow(() -> new UserNotFoundException(id.toString()));
     }
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User updateUser(UserUpdateCommand command) {
-        Long id = authService.getSessionUserId();
+        Long id = securitySessionService.getSessionUserId();
         User user = findById(id);
         user.update(command);
         return user;
@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserSchool> getMySchoolMembers(Long schoolId) {
-        Long id = authService.getSessionUserId();
+        Long id = securitySessionService.getSessionUserId();
         schoolService.checkSchoolExists(schoolId);
 
         boolean isEnrolled = userRepository.isUserEnrolledInSchool(id, schoolId);

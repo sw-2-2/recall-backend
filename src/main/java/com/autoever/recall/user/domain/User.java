@@ -4,7 +4,6 @@ import com.autoever.recall.school.domain.SchoolType;
 import com.autoever.recall.userschool.domain.UserSchool;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -30,7 +29,6 @@ public class User {
     private String email;
 
     @Column(nullable = false)
-    @Size(min = 6, message = "비밀번호는 최소 6자 이상이어야 합니다.")
     private String password;
 
     @Enumerated(EnumType.STRING)

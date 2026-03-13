@@ -40,7 +40,7 @@ public class SecurityConfigImpl implements SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(csrf -> csrf.ignoringRequestMatchers(whiteList))
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(whiteList).permitAll()
                         .anyRequest().hasRole(UserRole.USER.name())

@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
@@ -25,7 +26,7 @@ public class SecurityConfigImpl implements SecurityConfig {
 
     private final String[] whiteList = {
             "/api/users/signup",
-            "/api/users/login",
+            "/api/auth/login",
             "/api/schools/**",
             "/swagger-ui/**",
             "/v3/api-docs/**",
@@ -49,7 +50,8 @@ public class SecurityConfigImpl implements SecurityConfig {
                 )
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(authenticationEntryPoint)
-                );
+                )
+                .logout(AbstractHttpConfigurer::disable);
         return http.build();
     }
 

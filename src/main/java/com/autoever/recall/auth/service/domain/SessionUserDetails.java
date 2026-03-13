@@ -8,12 +8,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 
-@Getter
 @Builder
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class SessionUserDetails implements UserDetails {
     @Getter
-    private final Long id;          // DB의 PK 값
+    private final Long id;
     private final String email;
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;

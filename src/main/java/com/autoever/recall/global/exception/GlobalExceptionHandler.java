@@ -53,7 +53,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleBadCredentials(BadCredentialsException e) {
         log.warn("[AUTH_BAD_CREDENTIAL]");
 
-        ErrorResponse response = ErrorResponse.of("AUTH_BAD_CREDENTIAL", "아이디 또는 비밀번호가 잘못되었습니다.");
+        ErrorResponse response = ErrorResponse.of("AUTH_BAD_CREDENTIAL", "아이디 또는 비밀번호가 잘못되었습니다");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 

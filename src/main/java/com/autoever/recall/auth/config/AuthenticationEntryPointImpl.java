@@ -32,7 +32,7 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
         response.setCharacterEncoding("UTF-8");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
-        ErrorResponse errorResponse = ErrorResponse.of("USER_UNAUTHORIZED", UnAuthorizedException.MESSAGE);
+        ErrorResponse errorResponse = ErrorResponse.of("AUTH_UNAUTHORIZED", UnAuthorizedException.MESSAGE);
         String json = objectMapper.writeValueAsString(errorResponse);
         response.getWriter().write(json);
     }

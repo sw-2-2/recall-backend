@@ -5,11 +5,12 @@ import com.autoever.recall.school.domain.SchoolCreateCommand;
 import com.autoever.recall.school.service.SchoolService;
 import com.autoever.recall.user.domain.*;
 import com.autoever.recall.user.repository.UserRepository;
-import com.autoever.recall.userschool.service.UserSchoolService;
 import com.autoever.recall.user.service.exception.DuplicateEmailException;
+import com.autoever.recall.user.service.exception.UserNotEnrolledException;
 import com.autoever.recall.user.service.exception.UserNotFoundException;
 import com.autoever.recall.user.service.exception.UserSchoolAlreadyExistsException;
 import com.autoever.recall.userschool.domain.UserSchool;
+import com.autoever.recall.userschool.service.UserSchoolService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,11 +71,11 @@ public class UserServiceImpl implements UserService {
     public List<UserSchool> getMySchoolMembers(Long schoolId) {
         Long tempUserId = 1L; // JWT 전 임시 지정
 
+        schoolService.checkSchoolExists(schoolId);
+
         boolean isEnrolled = userRepository.isUserEnrolledInSchool(tempUserId, schoolId);
         if(!isEnrolled) {
-            throw new IllegalArgumentException(
-                    String.format("사용자(ID: %d)는 해당 학교(ID: %d)의 소속이 아닙니다.", tempUserId, schoolId)
-            );
+            throw new UserNotEnrolledException(tempUserId, schoolId);
         }
 
         return userSchoolService.getSchoolMembers(schoolId);

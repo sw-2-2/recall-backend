@@ -1,9 +1,8 @@
 package com.autoever.recall.school.service;
 
-import com.autoever.recall.school.domain.SchoolCreateCommand;
 import com.autoever.recall.school.domain.School;
+import com.autoever.recall.school.domain.SchoolCreateCommand;
 import com.autoever.recall.school.domain.SchoolType;
-import com.autoever.recall.userschool.domain.UserSchool;
 
 import java.util.List;
 
@@ -24,4 +23,6 @@ public interface SchoolService {
     * 학교 생성
     * */
     School createSchool(SchoolCreateCommand command);
+
+    boolean checkSchoolExists(Long schoolId);
 }

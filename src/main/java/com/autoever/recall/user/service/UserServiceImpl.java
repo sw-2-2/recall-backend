@@ -1,5 +1,6 @@
 package com.autoever.recall.user.service;
 
+import com.autoever.recall.auth.service.AuthService;
 import com.autoever.recall.school.domain.School;
 import com.autoever.recall.school.domain.SchoolCreateCommand;
 import com.autoever.recall.school.service.SchoolService;
@@ -23,6 +24,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final AuthService authService;
     private final UserSchoolService userSchoolService;
     private final SchoolService schoolService;
     private final BCryptPasswordEncoder passwordEncoder;
@@ -61,27 +63,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUser() {
-        return userRepository.findByIdWithSchools(1L) // TODO: JWT로 email로 조회
-                .orElseThrow(() -> new UserNotFoundException("1"));
+        Long id = authService.getSessionUserId();
+        return userRepository.findByIdWithSchools(id)
+                .orElseThrow(() -> new UserNotFoundException(id.toString()));
     }
 
     @Override
     @Transactional
     public User updateUser(UserUpdateCommand command) {
-        User user = findById(1L); // TODO: JWT로 email로 조회
+        Long id = authService.getSessionUserId();
+        User user = findById(id);
         user.update(command);
         return user;
     }
 
     @Override
     public List<UserSchool> getMySchoolMembers(Long schoolId) {
-        Long tempUserId = 1L; // JWT 전 임시 지정
-
+        Long id = authService.getSessionUserId();
         schoolService.checkSchoolExists(schoolId);
 
-        boolean isEnrolled = userRepository.isUserEnrolledInSchool(tempUserId, schoolId);
+        boolean isEnrolled = userRepository.isUserEnrolledInSchool(id, schoolId);
         if(!isEnrolled) {
-            throw new UserNotEnrolledException(tempUserId, schoolId);
+            throw new UserNotEnrolledException(id, schoolId);
         }
 
         return userSchoolService.getSchoolMembers(schoolId);

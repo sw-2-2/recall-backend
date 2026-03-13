@@ -1,8 +1,11 @@
 package com.autoever.recall.global.exception;
 
+import com.autoever.recall.school.service.exception.SchoolNotFoundException;
 import com.autoever.recall.user.service.exception.DuplicateEmailException;
+import com.autoever.recall.user.service.exception.UserNotEnrolledException;
 import com.autoever.recall.user.service.exception.UserNotFoundException;
 import com.autoever.recall.user.service.exception.UserSchoolAlreadyExistsException;
+import com.autoever.recall.userschool.service.exception.UserSchoolNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,16 +42,40 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
+    @ExceptionHandler(UserNotEnrolledException.class)
+    public ResponseEntity<ErrorResponse> handleUserNotEnrolledException(UserNotEnrolledException e) {
+        log.warn("[UserNotEnrolled] userId: {}, schoolId: {}", e.getUserId(), e.getSchoolId());
+
+        ErrorResponse response = ErrorResponse.of("USER_NOT_ENROLLED", e.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+    }
+
+    @ExceptionHandler(UserSchoolNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleUserSchoolNotFoundException(UserSchoolNotFoundException e) {
+        log.warn("[UserSchoolNotFound] userId: {}, type: {}", e.getUserId(), e.getType());
+
+        ErrorResponse response = ErrorResponse.of("USER_SCHOOL_NOT_FOUND", e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler(SchoolNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleSchoolNotFoundException(SchoolNotFoundException e) {
+        log.warn("[SchoolNotFound] schoolId: {}", e.getSchoolId());
+
+        ErrorResponse response = ErrorResponse.of("SCHOOL_NOT_FOUND", e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<ErrorResponse> handleArgumentValidException(MethodArgumentNotValidException e) {
         String firstErrorMessage = e.getBindingResult().getFieldErrors().get(0).getDefaultMessage();
         log.warn("Validation failed: {}", firstErrorMessage);
 
         List<ErrorDetailDto> details = e.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .map(error -> new ErrorDetailDto(error.getField(), error.getDefaultMessage()))
-                .toList();
+                                        .getFieldErrors()
+                                        .stream()
+                                        .map(error -> new ErrorDetailDto(error.getField(), error.getDefaultMessage()))
+                                        .toList();
         ErrorResponse response = ErrorResponse.of("INVALID_INPUT", "요청값이 유효하지 않습니다", details);
         return ResponseEntity.badRequest().body(response);
     }

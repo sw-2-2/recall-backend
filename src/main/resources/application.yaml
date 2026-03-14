@@ -22,6 +22,15 @@ spring:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
 
+server:
+  forward-static-headers: true
+  servlet:
+    session:
+      cookie:
+        secure: true
+        same-site: none
+        http-only: true
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html

@@ -23,7 +23,7 @@ spring:
       port: ${REDIS_PORT}
 
 server:
-  forward-static-headers: true
+  forward-headers-strategy: native
   servlet:
     session:
       cookie:

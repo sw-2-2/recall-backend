@@ -69,7 +69,7 @@ public class SecurityConfigImpl implements SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(
-                List.of("http://localhost:3000", "https://recallhub.vercel.app")
+                List.of("http://localhost:5173", "https://recallhub.vercel.app")
         );
         config.setAllowedMethods(
                 List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")

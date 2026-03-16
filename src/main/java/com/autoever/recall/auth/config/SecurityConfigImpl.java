@@ -41,11 +41,21 @@ public class SecurityConfigImpl implements SecurityConfig {
     @Bean
     @Override
     public SecurityFilterChain filterChain(HttpSecurity http) {
+        CookieCsrfTokenRepository csrfTokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse();
+        csrfTokenRepository.setCookieCustomizer(cookie -> cookie
+                .secure(true)
+                .sameSite("None")
+                .path("/")
+        );
+
+        CsrfTokenRequestAttributeHandler requestAttributeHandler = new CsrfTokenRequestAttributeHandler();
+        requestAttributeHandler.setCsrfRequestAttributeName(null);
+
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf
-                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                        .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler())
+                        .csrfTokenRepository(csrfTokenRepository)
+                        .csrfTokenRequestHandler(requestAttributeHandler)
                         .ignoringRequestMatchers(whiteList)
                 )
                 .authorizeHttpRequests(auth -> auth

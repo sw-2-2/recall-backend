@@ -18,19 +18,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     * */
     Optional<User> findByEmail(String email);
 
-    /*
-    * 해당 id의 User 찾기
-    * UserSchool 포함
-    * School 포함
-    * */
-    @Query("""
-        SELECT DISTINCT u FROM User u
-        LEFT JOIN FETCH u.userSchools us
-        LEFT JOIN FETCH us.school s
-        WHERE u.id = :id
-    """)
-    Optional<User> findByIdWithSchools(Long id);
-
     @Query("SELECT COUNT(u) > 0 FROM User u " +
             "JOIN u.userSchools us " +
             "WHERE u.id = :userId AND us.school.id = :schoolId")

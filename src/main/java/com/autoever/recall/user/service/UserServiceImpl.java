@@ -3,6 +3,7 @@ package com.autoever.recall.user.service;
 import com.autoever.recall.auth.service.SecuritySessionService;
 import com.autoever.recall.school.domain.School;
 import com.autoever.recall.school.domain.SchoolCreateCommand;
+import com.autoever.recall.school.domain.SchoolType;
 import com.autoever.recall.school.service.SchoolService;
 import com.autoever.recall.user.domain.*;
 import com.autoever.recall.user.repository.UserRepository;
@@ -56,23 +57,17 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserNotFoundException(email));
     }
 
-    private User findById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id.toString()));
-    }
-
     @Override
     public User getUser() {
         Long id = securitySessionService.getSessionUserId();
-        return userRepository.findByIdWithSchools(id)
+        return userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id.toString()));
     }
 
     @Override
     @Transactional
     public User updateUser(UserUpdateCommand command) {
-        Long id = securitySessionService.getSessionUserId();
-        User user = findById(id);
+        User user = getUser();
         user.update(command);
         return user;
     }
@@ -89,7 +84,13 @@ public class UserServiceImpl implements UserService {
 
         return userSchoolService.getSchoolMembers(schoolId);
     }
-  
+
+    @Override
+    public UserSchool getMySchool(SchoolType type) {
+        Long id = securitySessionService.getSessionUserId();
+        return userSchoolService.getMySchool(id, type);
+    }
+
     /*
      * 1. User가 이미 type의 학교를 갖고 있는지 검사
      * 2. 연결할 학교가 존재하는 지 검사

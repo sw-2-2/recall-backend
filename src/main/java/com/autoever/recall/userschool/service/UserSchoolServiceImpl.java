@@ -1,8 +1,6 @@
 package com.autoever.recall.userschool.service;
 
-import com.autoever.recall.auth.service.SecuritySessionService;
 import com.autoever.recall.school.domain.SchoolType;
-import com.autoever.recall.school.service.SchoolService;
 import com.autoever.recall.userschool.service.exception.UserNotEnrolledException;
 import com.autoever.recall.userschool.domain.UserSchool;
 import com.autoever.recall.userschool.repository.UserSchoolRepository;
@@ -18,14 +16,16 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class UserSchoolServiceImpl implements UserSchoolService {
     private final UserSchoolRepository userSchoolRepository;
-    private final SecuritySessionService securitySessionService;
-    private final SchoolService schoolService;
 
     @Override
-    public UserSchool getMySchool(SchoolType type) {
-        Long userId = securitySessionService.getSessionUserId();
+    public UserSchool getMySchool(Long userId, SchoolType type) {
         return userSchoolRepository.findByUserIdAndSchoolType(userId, type)
                                    .orElseThrow(() -> new UserSchoolNotFoundException(userId, type));
+    }
+
+    @Override
+    public boolean existsByUserIdAndSchoolType(Long userId, SchoolType type) {
+        return userSchoolRepository.findByUserIdAndSchoolType(userId, type).isPresent();
     }
 
     @Override

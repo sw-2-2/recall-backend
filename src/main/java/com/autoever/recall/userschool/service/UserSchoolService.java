@@ -6,7 +6,9 @@ import com.autoever.recall.userschool.domain.UserSchool;
 import java.util.List;
 
 public interface UserSchoolService {
-    UserSchool getMySchool(SchoolType type);
+    UserSchool getMySchool(Long userId, SchoolType type);
+
+    boolean existsByUserIdAndSchoolType(Long userId, SchoolType type);
 
     List<UserSchool> getSchoolMembers(Long schoolId, int targetYear);
 

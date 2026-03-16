@@ -4,6 +4,7 @@ import com.autoever.recall.auth.service.exception.UnAuthorizedException;
 import com.autoever.recall.school.service.exception.InvalidSchoolTypeKeyException;
 import com.autoever.recall.school.service.exception.SchoolNotFoundException;
 import com.autoever.recall.user.service.exception.DuplicateEmailException;
+import com.autoever.recall.user.service.exception.SchoolTypeMismatchException;
 import com.autoever.recall.userschool.service.exception.UserNotEnrolledException;
 import com.autoever.recall.user.service.exception.UserNotFoundException;
 import com.autoever.recall.user.service.exception.UserSchoolAlreadyExistsException;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -42,6 +44,14 @@ public class GlobalExceptionHandler {
         log.warn("[UserSchoolAlreadyExists] type: {}", e.getType());
 
         ErrorResponse response = ErrorResponse.of("USER_SCHOOL_EXISTS", e.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+
+    @ExceptionHandler(SchoolTypeMismatchException.class)
+    public ResponseEntity<ErrorResponse> handleSchoolTypeMismatchException(SchoolTypeMismatchException e) {
+        log.warn("[SchoolTypeMismatch] type: {}", e.getType());
+
+        ErrorResponse response = ErrorResponse.of("SCHOOL_TYPE_MISMATCH", e.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
   
@@ -91,6 +101,14 @@ public class GlobalExceptionHandler {
 
         ErrorResponse response = ErrorResponse.of("AUTH_BAD_CREDENTIAL", "아이디 또는 비밀번호가 잘못되었습니다");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response); 
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorResponse> handleAuthenticationException(AuthenticationException e) {
+        log.warn("[AUTH_COMMON_ERROR]");
+
+        ErrorResponse response = ErrorResponse.of("AUTH_BAD_CREDENTIAL", "아이디 또는 비밀번호가 잘못되었습니다");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

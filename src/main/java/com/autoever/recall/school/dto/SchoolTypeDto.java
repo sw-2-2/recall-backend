@@ -19,14 +19,11 @@ public enum SchoolTypeDto {
         this.key = key;
     }
 
-    // Response: 객체를 JSON으로 보낼 때 'key'값을 사용함
     @JsonValue
     public String getKey() {
         return key;
     }
 
-    // Request: JSON 문자열을 Enum으로 바꿀 때 이 메서드를 사용함
-    @JsonCreator
     public static SchoolTypeDto fromKey(String key) {
         return Arrays.stream(SchoolTypeDto.values())
                      .filter(it -> it.getKey().equals(key))
@@ -34,11 +31,11 @@ public enum SchoolTypeDto {
                      .orElseThrow(() -> new InvalidSchoolTypeKeyException(key));
     }
 
-    public static String from(SchoolType type) {
+    public static SchoolTypeDto from(SchoolType type) {
         return switch (type) {
-            case ELEMENTARY -> SchoolTypeDto.ELEMENTARY.key;
-            case MIDDLE -> SchoolTypeDto.MIDDLE.key;
-            case HIGH -> SchoolTypeDto.HIGH.key;
+            case ELEMENTARY -> SchoolTypeDto.ELEMENTARY;
+            case MIDDLE -> SchoolTypeDto.MIDDLE;
+            case HIGH -> SchoolTypeDto.HIGH;
         };
     }
 

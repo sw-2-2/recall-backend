@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 public record SchoolDto(
         Long id,
-        String type,
+        SchoolTypeDto type,
         String name,
         String imageUrl,
         String address,

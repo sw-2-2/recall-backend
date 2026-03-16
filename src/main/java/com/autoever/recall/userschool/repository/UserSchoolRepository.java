@@ -25,8 +25,12 @@ public interface UserSchoolRepository extends JpaRepository<UserSchool, Long> {
     );
 
     // 본인 학교 정보 조회
-    @Query("SELECT us FROM UserSchool us JOIN FETCH us.school s " +
-            "WHERE us.user.id = :userId AND s.type = :type")
+    @Query("""
+            SELECT us
+            FROM UserSchool us
+            JOIN FETCH us.school s
+            WHERE us.user.id = :userId AND s.type = :type
+    """)
     Optional<UserSchool> findByUserIdAndSchoolType(@Param("userId") Long userId, @Param("type") SchoolType type);
 
     // 특정 유저와 특정 학교의 연결 정보 단건 조회

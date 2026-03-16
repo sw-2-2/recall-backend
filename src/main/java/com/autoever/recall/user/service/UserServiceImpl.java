@@ -3,12 +3,14 @@ package com.autoever.recall.user.service;
 import com.autoever.recall.auth.service.SecuritySessionService;
 import com.autoever.recall.school.domain.School;
 import com.autoever.recall.school.domain.SchoolCreateCommand;
+import com.autoever.recall.school.domain.SchoolType;
 import com.autoever.recall.school.service.SchoolService;
 import com.autoever.recall.user.domain.*;
 import com.autoever.recall.user.repository.UserRepository;
 import com.autoever.recall.user.service.exception.DuplicateEmailException;
 import com.autoever.recall.user.service.exception.UserNotFoundException;
 import com.autoever.recall.user.service.exception.UserSchoolAlreadyExistsException;
+import com.autoever.recall.user.service.exception.*;
 import com.autoever.recall.userschool.domain.UserSchool;
 import com.autoever.recall.userschool.service.UserSchoolService;
 import lombok.RequiredArgsConstructor;
@@ -55,23 +57,17 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserNotFoundException(email));
     }
 
-    private User findById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id.toString()));
-    }
-
     @Override
     public User getUser() {
         Long id = securitySessionService.getSessionUserId();
-        return userRepository.findByIdWithSchools(id)
+        return userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id.toString()));
     }
 
     @Override
     @Transactional
     public User updateUser(UserUpdateCommand command) {
-        Long id = securitySessionService.getSessionUserId();
-        User user = findById(id);
+        User user = getUser();
         user.update(command);
         return user;
     }
@@ -85,7 +81,13 @@ public class UserServiceImpl implements UserService {
 
         return userSchoolService.getSchoolMembers(schoolId, myGraduationYear);
     }
-  
+
+    @Override
+    public UserSchool getMySchool(SchoolType type) {
+        Long id = securitySessionService.getSessionUserId();
+        return userSchoolService.getMySchool(id, type);
+    }
+
     /*
      * 1. User가 이미 type의 학교를 갖고 있는지 검사
      * 2. 연결할 학교가 존재하는 지 검사
@@ -95,10 +97,15 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserSchool connectUserAndSchool(UserSchoolConnectCommand command) {
         User user = getUser();
-        if (user.hasSchoolType(command.type())) {
+        if (userSchoolService.existsByUserIdAndSchoolType(user.getId(), command.type())) {
             throw new UserSchoolAlreadyExistsException(command.type().name());
         }
+
         School school = schoolService.getSchool(command.id());
+        if (!school.getType().equals(command.type())) {
+            throw new SchoolTypeMismatchException(command.type().name());
+        }
+
         UserSchool userSchool = UserSchool.builder()
                 .user(user)
                 .school(school)
@@ -117,7 +124,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserSchool createSchoolAndConnectUser(UserSchoolCreateCommand command) {
         User user = getUser();
-        if (user.hasSchoolType(command.type())) {
+        if (userSchoolService.existsByUserIdAndSchoolType(user.getId(), command.type())) {
             throw new UserSchoolAlreadyExistsException(command.type().name());
         }
         School school = schoolService.createSchool(

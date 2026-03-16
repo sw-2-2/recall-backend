@@ -8,5 +8,7 @@ import java.util.List;
 public interface UserSchoolService {
     UserSchool getMySchool(Long userId, SchoolType type);
 
+    boolean existsByUserIdAndSchoolType(Long userId, SchoolType type);
+
     List<UserSchool> getSchoolMembers(Long schoolId);
 }

@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserSchool connectUserAndSchool(UserSchoolConnectCommand command) {
         User user = getUser();
-        if (user.hasSchoolType(command.type())) {
+        if (userSchoolService.existsByUserIdAndSchoolType(user.getId(), command.type())) {
             throw new UserSchoolAlreadyExistsException(command.type().name());
         }
         School school = schoolService.getSchool(command.id());

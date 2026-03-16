@@ -25,6 +25,11 @@ public class UserSchoolServiceImpl implements UserSchoolService {
     }
 
     @Override
+    public boolean existsByUserIdAndSchoolType(Long userId, SchoolType type) {
+        return userSchoolRepository.findByUserIdAndSchoolType(userId, type).isPresent();
+    }
+
+    @Override
     public List<UserSchool> getSchoolMembers(Long schoolId) {
 
         schoolService.checkSchoolExists(schoolId);

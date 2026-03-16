@@ -72,7 +72,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserSchool> getMySchoolMembers(Long schoolId) {
         Long id = securitySessionService.getSessionUserId();
-        schoolService.checkSchoolExists(schoolId);
 
         boolean isEnrolled = userRepository.isUserEnrolledInSchool(id, schoolId);
         if(!isEnrolled) {

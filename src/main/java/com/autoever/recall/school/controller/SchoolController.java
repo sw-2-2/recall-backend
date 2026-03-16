@@ -23,27 +23,26 @@ public class SchoolController {
             @ModelAttribute @Valid SchoolFilterParams params
     ){
         SchoolType type = params.isAllType() ? null : SchoolTypeDto.fromKey(params.type()).toDomain();
-
         List<School> schools = schoolService.getSchools(params.isAllType(), type);
-        return ResponseEntity.ok(SchoolsResponse.from(schools));
+        SchoolsResponse response = SchoolsResponse.from(schools);
+        return ResponseEntity.ok(response);
     }
 
     // 학교 검색 리스트 조회
     @GetMapping("/search")
     public ResponseEntity<SchoolsResponse> findAllSchools(
             @ModelAttribute @Valid SchoolMembersSearchParams params
-            ) {
+    ) {
         SchoolType type = params.isAllType() ? null : SchoolTypeDto.fromKey(params.type()).toDomain();
-
         List<School> schools = schoolService.searchSchools(params.keyword(), params.isAllType(), type);
-        return ResponseEntity.ok(SchoolsResponse.from(schools));
+        SchoolsResponse response = SchoolsResponse.from(schools);
+        return ResponseEntity.ok(response);
     }
 
     // 학교 세부정보 조회
     @GetMapping("/{id}")
     public ResponseEntity<SchoolDto> getSchool(@PathVariable("id") Long id) {
-        School school = schoolService.getSchool(id);
-
-        return ResponseEntity.ok(SchoolDto.from(school));
+        SchoolDto response = SchoolDto.from(schoolService.getSchool(id));
+        return ResponseEntity.ok(response);
     }
 }

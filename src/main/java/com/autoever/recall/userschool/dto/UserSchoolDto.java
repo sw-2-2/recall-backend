@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 public record UserSchoolDto(
         Long id,
-        String type,
+        SchoolTypeDto type,
         Integer graduationYear,
         String name,
         String imageUrl,

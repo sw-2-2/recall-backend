@@ -13,7 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@Profile("!local")
+@Profile("local")
 public class LocalSecurityConfigImpl implements SecurityConfig {
     @Bean
     @Override

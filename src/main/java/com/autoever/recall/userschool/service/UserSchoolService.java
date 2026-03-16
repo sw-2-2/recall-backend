@@ -10,5 +10,7 @@ public interface UserSchoolService {
 
     boolean existsByUserIdAndSchoolType(Long userId, SchoolType type);
 
-    List<UserSchool> getSchoolMembers(Long schoolId);
+    List<UserSchool> getSchoolMembers(Long schoolId, int targetYear);
+
+    int getMyGraduationYear(Long userId, Long schoolId);
 }

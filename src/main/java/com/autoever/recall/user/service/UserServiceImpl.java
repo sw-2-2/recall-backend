@@ -7,6 +7,9 @@ import com.autoever.recall.school.domain.SchoolType;
 import com.autoever.recall.school.service.SchoolService;
 import com.autoever.recall.user.domain.*;
 import com.autoever.recall.user.repository.UserRepository;
+import com.autoever.recall.user.service.exception.DuplicateEmailException;
+import com.autoever.recall.user.service.exception.UserNotFoundException;
+import com.autoever.recall.user.service.exception.UserSchoolAlreadyExistsException;
 import com.autoever.recall.user.service.exception.*;
 import com.autoever.recall.userschool.domain.UserSchool;
 import com.autoever.recall.userschool.service.UserSchoolService;
@@ -73,12 +76,10 @@ public class UserServiceImpl implements UserService {
     public List<UserSchool> getMySchoolMembers(Long schoolId) {
         Long id = securitySessionService.getSessionUserId();
 
-        boolean isEnrolled = userRepository.isUserEnrolledInSchool(id, schoolId);
-        if(!isEnrolled) {
-            throw new UserNotEnrolledException(id, schoolId);
-        }
+        // userId/schoolId 존재 점검 및 사용자의 graduationYear 추출
+        int myGraduationYear = userSchoolService.getMyGraduationYear(id, schoolId);
 
-        return userSchoolService.getSchoolMembers(schoolId);
+        return userSchoolService.getSchoolMembers(schoolId, myGraduationYear);
     }
 
     @Override

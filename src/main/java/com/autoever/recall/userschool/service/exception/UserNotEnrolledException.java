@@ -1,4 +1,4 @@
-package com.autoever.recall.user.service.exception;
+package com.autoever.recall.userschool.service.exception;
 
 import lombok.Getter;
 

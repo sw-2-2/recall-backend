@@ -7,10 +7,7 @@ import com.autoever.recall.school.domain.SchoolType;
 import com.autoever.recall.school.service.SchoolService;
 import com.autoever.recall.user.domain.*;
 import com.autoever.recall.user.repository.UserRepository;
-import com.autoever.recall.user.service.exception.DuplicateEmailException;
-import com.autoever.recall.user.service.exception.UserNotEnrolledException;
-import com.autoever.recall.user.service.exception.UserNotFoundException;
-import com.autoever.recall.user.service.exception.UserSchoolAlreadyExistsException;
+import com.autoever.recall.user.service.exception.*;
 import com.autoever.recall.userschool.domain.UserSchool;
 import com.autoever.recall.userschool.service.UserSchoolService;
 import lombok.RequiredArgsConstructor;
@@ -103,7 +100,12 @@ public class UserServiceImpl implements UserService {
         if (userSchoolService.existsByUserIdAndSchoolType(user.getId(), command.type())) {
             throw new UserSchoolAlreadyExistsException(command.type().name());
         }
+
         School school = schoolService.getSchool(command.id());
+        if (!school.getType().equals(command.type())) {
+            throw new SchoolTypeMismatchException(command.type().name());
+        }
+
         UserSchool userSchool = UserSchool.builder()
                 .user(user)
                 .school(school)

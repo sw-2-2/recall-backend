@@ -3,10 +3,7 @@ package com.autoever.recall.global.exception;
 import com.autoever.recall.auth.service.exception.UnAuthorizedException;
 import com.autoever.recall.school.service.exception.InvalidSchoolTypeKeyException;
 import com.autoever.recall.school.service.exception.SchoolNotFoundException;
-import com.autoever.recall.user.service.exception.DuplicateEmailException;
-import com.autoever.recall.user.service.exception.UserNotEnrolledException;
-import com.autoever.recall.user.service.exception.UserNotFoundException;
-import com.autoever.recall.user.service.exception.UserSchoolAlreadyExistsException;
+import com.autoever.recall.user.service.exception.*;
 import com.autoever.recall.userschool.service.exception.UserSchoolNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -43,6 +40,14 @@ public class GlobalExceptionHandler {
         log.warn("[UserSchoolAlreadyExists] type: {}", e.getType());
 
         ErrorResponse response = ErrorResponse.of("USER_SCHOOL_EXISTS", e.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+
+    @ExceptionHandler(SchoolTypeMismatchException.class)
+    public ResponseEntity<ErrorResponse> handleSchoolTypeMismatchException(SchoolTypeMismatchException e) {
+        log.warn("[SchoolTypeMismatch] type: {}", e.getType());
+
+        ErrorResponse response = ErrorResponse.of("SCHOOL_TYPE_MISMATCH", e.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
   

@@ -8,5 +8,5 @@ import java.util.List;
 public interface UserSchoolService {
     UserSchool getMySchool(SchoolType type);
 
-    List<UserSchool> getSchoolMembers(Long schoolId);
+    List<UserSchool> getSchoolMembers(Long schoolId, int targetYear);
 }

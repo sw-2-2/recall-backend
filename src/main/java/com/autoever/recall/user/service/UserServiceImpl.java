@@ -80,14 +80,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserSchool> getMySchoolMembers(Long schoolId) {
         Long id = securitySessionService.getSessionUserId();
+
+        // 학교 존재 여부 확인
         schoolService.checkSchoolExists(schoolId);
 
-        boolean isEnrolled = userRepository.isUserEnrolledInSchool(id, schoolId);
-        if(!isEnrolled) {
-            throw new UserNotEnrolledException(id, schoolId);
-        }
+        // 사용자와 학교 연관 정보 조회
+        User user = userRepository.findByIdWithSchools(id)
+                .orElseThrow(() -> new UserNotFoundException(id.toString()));
 
-        return userSchoolService.getSchoolMembers(schoolId);
+        // 해당 학교 소속 여부 확인 및 내 졸업 연도 추출
+        int myGraduationYear = user.getUserSchools().stream()
+                .filter(us -> us.getSchool().getId().equals(schoolId))
+                .findFirst()
+                .orElseThrow(() -> new UserNotEnrolledException(id, schoolId))
+                .getGraduationYear();
+
+        return userSchoolService.getSchoolMembers(schoolId, myGraduationYear);
     }
   
     /*

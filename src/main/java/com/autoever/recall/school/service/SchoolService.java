@@ -23,6 +23,4 @@ public interface SchoolService {
     * 학교 생성
     * */
     School createSchool(SchoolCreateCommand command);
-
-    boolean checkSchoolExists(Long schoolId);
 }

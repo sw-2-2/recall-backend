@@ -35,8 +35,8 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public School getSchool(Long schoolId) {
-        checkSchoolExists(schoolId);
-        return schoolRepository.findById(schoolId).get();
+        return schoolRepository.findById(schoolId)
+                .orElseThrow(() -> new SchoolNotFoundException(schoolId));
     }
 
     @Override
@@ -48,14 +48,5 @@ public class SchoolServiceImpl implements SchoolService {
                 .address(command.address())
                 .build();
         return schoolRepository.save(school);
-    }
-
-    @Override
-    public boolean checkSchoolExists(Long schoolId) {
-        boolean exists = schoolRepository.existsById(schoolId);
-        if (!exists) {
-            throw new SchoolNotFoundException(schoolId);
-        }
-        return true;
     }
 }

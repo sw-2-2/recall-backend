@@ -6,9 +6,7 @@ import com.autoever.recall.school.dto.SchoolTypeDto;
 import com.autoever.recall.user.domain.*;
 import com.autoever.recall.user.dto.*;
 import com.autoever.recall.user.service.UserService;
-import com.autoever.recall.userschool.domain.UserSchool;
 import com.autoever.recall.userschool.dto.UserSchoolDto;
-import com.autoever.recall.userschool.service.UserSchoolService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,7 +20,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-    private final UserSchoolService userSchoolService;
 
     @PostMapping("/signup")
     public ResponseEntity<UserCreateResponse> createUser(@RequestBody @Valid UserCreateRequest request) {
@@ -48,9 +45,8 @@ public class UserController {
     @GetMapping("/schools/{type}")
     public ResponseEntity<UserSchoolDto> getMySchool(@PathVariable(value = "type") String type) {
         SchoolType schoolType = SchoolTypeDto.fromKey(type).toDomain();
-
-        UserSchool userSchool = userSchoolService.getMySchool(schoolType);
-        return ResponseEntity.ok(UserSchoolDto.from(userSchool));
+        UserSchoolDto response = UserSchoolDto.from(userService.getMySchool(schoolType));
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/schools/{id}/members")

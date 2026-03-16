@@ -35,8 +35,8 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public School getSchool(Long schoolId) {
-        checkSchoolExists(schoolId);
-        return schoolRepository.findById(schoolId).get();
+        return schoolRepository.findById(schoolId)
+                .orElseThrow(() -> new SchoolNotFoundException(schoolId));
     }
 
     @Override

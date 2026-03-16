@@ -83,26 +83,7 @@ public class UserServiceImpl implements UserService {
         // userId/schoolId 존재 점검 및 사용자의 graduationYear 추출
         int myGraduationYear = userSchoolService.getMyGraduationYear(id, schoolId);
 
-        List<UserSchool> memberUserSchools = userSchoolService.getSchoolMembers(schoolId, myGraduationYear);
-
-        return memberUserSchools;
-
-//        // 아래 -> 기존 코드
-//        // 학교 존재 여부 확인
-//        schoolService.checkSchoolExists(schoolId);
-//
-//        // 사용자와 학교 연관 정보 조회
-//        User user = userRepository.findByIdWithSchools(id)
-//                .orElseThrow(() -> new UserNotFoundException(id.toString()));
-//
-//        // 해당 학교 소속 여부 확인 및 내 졸업 연도 추출
-//        int myGraduationYear = user.getUserSchools().stream()
-//                .filter(us -> us.getSchool().getId().equals(schoolId))
-//                .findFirst()
-//                .orElseThrow(() -> new UserNotEnrolledException(id, schoolId))
-//                .getGraduationYear();
-//
-//        return userSchoolService.getSchoolMembers(schoolId, myGraduationYear);
+        return userSchoolService.getSchoolMembers(schoolId, myGraduationYear);
     }
   
     /*

@@ -9,4 +9,6 @@ public interface UserSchoolService {
     UserSchool getMySchool(SchoolType type);
 
     List<UserSchool> getSchoolMembers(Long schoolId, int targetYear);
+
+    int getMyGraduationYear(Long userId, Long schoolId);
 }

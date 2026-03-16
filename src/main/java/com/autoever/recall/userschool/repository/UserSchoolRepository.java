@@ -16,8 +16,6 @@ public interface UserSchoolRepository extends JpaRepository<UserSchool, Long> {
     @Query("""
             SELECT DISTINCT us FROM UserSchool us
             JOIN FETCH us.user u
-            JOIN FETCH u.userSchools uss
-            JOIN FETCH uss.school s
             WHERE us.school.id = :schoolId
             AND us.graduationYear BETWEEN :startYear AND :endYear""")
     List<UserSchool> findAllMembersWithDetails(
@@ -30,4 +28,7 @@ public interface UserSchoolRepository extends JpaRepository<UserSchool, Long> {
     @Query("SELECT us FROM UserSchool us JOIN FETCH us.school s " +
             "WHERE us.user.id = :userId AND s.type = :type")
     Optional<UserSchool> findByUserIdAndSchoolType(@Param("userId") Long userId, @Param("type") SchoolType type);
+
+    // 특정 유저와 특정 학교의 연결 정보 단건 조회
+    Optional<UserSchool> findByUserIdAndSchoolId(Long userId, Long schoolId);
 }

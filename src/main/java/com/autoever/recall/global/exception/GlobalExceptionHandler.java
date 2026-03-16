@@ -4,7 +4,7 @@ import com.autoever.recall.auth.service.exception.UnAuthorizedException;
 import com.autoever.recall.school.service.exception.InvalidSchoolTypeKeyException;
 import com.autoever.recall.school.service.exception.SchoolNotFoundException;
 import com.autoever.recall.user.service.exception.DuplicateEmailException;
-import com.autoever.recall.user.service.exception.UserNotEnrolledException;
+import com.autoever.recall.userschool.service.exception.UserNotEnrolledException;
 import com.autoever.recall.user.service.exception.UserNotFoundException;
 import com.autoever.recall.user.service.exception.UserSchoolAlreadyExistsException;
 import com.autoever.recall.userschool.service.exception.UserSchoolNotFoundException;

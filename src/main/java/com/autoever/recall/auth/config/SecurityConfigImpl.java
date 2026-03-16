@@ -4,12 +4,12 @@ import com.autoever.recall.user.domain.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
@@ -24,7 +24,6 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@Profile("!local")
 @RequiredArgsConstructor
 public class SecurityConfigImpl implements SecurityConfig {
     private final AuthenticationEntryPoint authenticationEntryPoint;
@@ -45,7 +44,6 @@ public class SecurityConfigImpl implements SecurityConfig {
         csrfTokenRepository.setCookieCustomizer(cookie -> cookie
                 .secure(true)
                 .sameSite("None")
-                .path("/")
         );
 
         CsrfTokenRequestAttributeHandler requestAttributeHandler = new CsrfTokenRequestAttributeHandler();
@@ -63,7 +61,7 @@ public class SecurityConfigImpl implements SecurityConfig {
                         .anyRequest().hasRole(UserRole.USER.name())
                 )
                 .sessionManagement(session -> session
-                        .sessionFixation().changeSessionId()
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                         .maximumSessions(1)
                         .maxSessionsPreventsLogin(false)
                 )

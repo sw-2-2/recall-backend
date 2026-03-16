@@ -32,6 +32,6 @@ public class UserSchoolServiceImpl implements UserSchoolService {
 
         schoolService.checkSchoolExists(schoolId);
 
-        return userSchoolRepository.findAllMembersWithDetails(schoolId, targetYear - 1, targetYear + 1);
+        return userSchoolRepository.findAllMembersWithDetails(schoolId, targetYear - 2, targetYear + 2);
     }
 }

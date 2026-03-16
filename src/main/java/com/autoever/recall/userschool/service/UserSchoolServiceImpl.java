@@ -28,10 +28,10 @@ public class UserSchoolServiceImpl implements UserSchoolService {
     }
 
     @Override
-    public List<UserSchool> getSchoolMembers(Long schoolId) {
+    public List<UserSchool> getSchoolMembers(Long schoolId, int targetYear) {
 
         schoolService.checkSchoolExists(schoolId);
 
-        return userSchoolRepository.findAllMembersWithDetails(schoolId);
+        return userSchoolRepository.findAllMembersWithDetails(schoolId, targetYear - 2, targetYear + 2);
     }
 }

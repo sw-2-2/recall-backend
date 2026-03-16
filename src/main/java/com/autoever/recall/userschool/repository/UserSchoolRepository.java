@@ -18,8 +18,13 @@ public interface UserSchoolRepository extends JpaRepository<UserSchool, Long> {
             JOIN FETCH us.user u
             JOIN FETCH u.userSchools uss
             JOIN FETCH uss.school s
-            WHERE us.school.id = :schoolId""")
-    List<UserSchool> findAllMembersWithDetails(@Param("schoolId") Long schoolId);
+            WHERE us.school.id = :schoolId
+            AND us.graduationYear BETWEEN :startYear AND :endYear""")
+    List<UserSchool> findAllMembersWithDetails(
+            @Param("schoolId") Long schoolId,
+            @Param("startYear") int startYear,
+            @Param("endYear") int endYear
+    );
 
     // 본인 학교 정보 조회
     @Query("SELECT us FROM UserSchool us JOIN FETCH us.school s " +

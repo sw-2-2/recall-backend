@@ -54,6 +54,7 @@ public class UserController {
     }
 
     @GetMapping("/schools/{id}/members")
+    // 여기 수정 시작!2
     public ResponseEntity<SchoolMembersResponse> getMySchoolMembers(@PathVariable("id") Long id) {
         List<SchoolMemberDto> memberDtos = userService.getMySchoolMembers(id)
                 .stream()

@@ -24,7 +24,7 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@Profile("local")
+@Profile("!local")
 @RequiredArgsConstructor
 public class SecurityConfigImpl implements SecurityConfig {
     private final AuthenticationEntryPoint authenticationEntryPoint;

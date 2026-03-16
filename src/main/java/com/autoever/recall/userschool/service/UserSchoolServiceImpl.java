@@ -1,7 +1,6 @@
 package com.autoever.recall.userschool.service;
 
 import com.autoever.recall.school.domain.SchoolType;
-import com.autoever.recall.school.service.SchoolService;
 import com.autoever.recall.userschool.domain.UserSchool;
 import com.autoever.recall.userschool.repository.UserSchoolRepository;
 import com.autoever.recall.userschool.service.exception.UserSchoolNotFoundException;
@@ -16,7 +15,6 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class UserSchoolServiceImpl implements UserSchoolService {
     private final UserSchoolRepository userSchoolRepository;
-    private final SchoolService schoolService;
 
     @Override
     public UserSchool getMySchool(Long userId, SchoolType type) {
@@ -31,9 +29,6 @@ public class UserSchoolServiceImpl implements UserSchoolService {
 
     @Override
     public List<UserSchool> getSchoolMembers(Long schoolId) {
-
-        schoolService.checkSchoolExists(schoolId);
-
         return userSchoolRepository.findAllMembersWithDetails(schoolId);
     }
 }

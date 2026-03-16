@@ -49,13 +49,4 @@ public class SchoolServiceImpl implements SchoolService {
                 .build();
         return schoolRepository.save(school);
     }
-
-    @Override
-    public boolean checkSchoolExists(Long schoolId) {
-        boolean exists = schoolRepository.existsById(schoolId);
-        if (!exists) {
-            throw new SchoolNotFoundException(schoolId);
-        }
-        return true;
-    }
 }

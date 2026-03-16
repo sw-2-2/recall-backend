@@ -1,8 +1,10 @@
 package com.autoever.recall.school.dto;
 
 import com.autoever.recall.school.domain.SchoolType;
+import com.autoever.recall.school.service.exception.InvalidSchoolTypeKeyException;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.Arrays;
 
@@ -27,9 +29,9 @@ public enum SchoolTypeDto {
     @JsonCreator
     public static SchoolTypeDto fromKey(String key) {
         return Arrays.stream(SchoolTypeDto.values())
-                     .filter(role -> role.getKey().equals(key))
+                     .filter(it -> it.getKey().equals(key))
                      .findFirst()
-                     .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 학교 유형(SchoolType)입니다: " + key));
+                     .orElseThrow(() -> new InvalidSchoolTypeKeyException(key));
     }
 
     public static String from(SchoolType type) {

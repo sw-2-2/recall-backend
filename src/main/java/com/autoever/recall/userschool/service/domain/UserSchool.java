@@ -1,6 +1,6 @@
 package com.autoever.recall.userschool.service.domain;
 
-import com.autoever.recall.school.domain.School;
+import com.autoever.recall.school.service.domain.School;
 import com.autoever.recall.user.service.domain.User;
 import jakarta.persistence.*;
 import lombok.*;

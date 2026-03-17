@@ -1,6 +1,6 @@
 package com.autoever.recall.userschool.service.exception;
 
-import com.autoever.recall.school.domain.SchoolType;
+import com.autoever.recall.school.service.domain.SchoolType;
 import lombok.Getter;
 
 @Getter

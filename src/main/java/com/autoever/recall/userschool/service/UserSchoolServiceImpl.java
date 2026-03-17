@@ -1,6 +1,6 @@
 package com.autoever.recall.userschool.service;
 
-import com.autoever.recall.school.domain.SchoolType;
+import com.autoever.recall.school.service.domain.SchoolType;
 import com.autoever.recall.userschool.service.exception.UserNotEnrolledException;
 import com.autoever.recall.userschool.service.domain.UserSchool;
 import com.autoever.recall.userschool.repository.UserSchoolRepository;

@@ -1,10 +1,8 @@
-package com.autoever.recall.school.dto;
+package com.autoever.recall.school.controller.dto;
 
-import com.autoever.recall.school.domain.SchoolType;
+import com.autoever.recall.school.service.domain.SchoolType;
 import com.autoever.recall.school.service.exception.InvalidSchoolTypeKeyException;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.Arrays;
 

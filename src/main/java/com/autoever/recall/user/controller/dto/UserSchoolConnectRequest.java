@@ -1,6 +1,6 @@
 package com.autoever.recall.user.controller.dto;
 
-import com.autoever.recall.school.dto.SchoolTypeDto;
+import com.autoever.recall.school.controller.dto.SchoolTypeDto;
 import com.autoever.recall.user.service.domain.UserSchoolConnectCommand;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

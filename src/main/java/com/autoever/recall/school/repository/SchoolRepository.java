@@ -1,7 +1,7 @@
 package com.autoever.recall.school.repository;
 
-import com.autoever.recall.school.domain.School;
-import com.autoever.recall.school.domain.SchoolType;
+import com.autoever.recall.school.service.domain.School;
+import com.autoever.recall.school.service.domain.SchoolType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

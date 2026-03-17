@@ -1,8 +1,8 @@
 package com.autoever.recall.user.controller;
 
 
-import com.autoever.recall.school.domain.SchoolType;
-import com.autoever.recall.school.dto.SchoolTypeDto;
+import com.autoever.recall.school.service.domain.SchoolType;
+import com.autoever.recall.school.controller.dto.SchoolTypeDto;
 import com.autoever.recall.user.controller.dto.*;
 import com.autoever.recall.user.service.UserService;
 import com.autoever.recall.user.service.domain.*;

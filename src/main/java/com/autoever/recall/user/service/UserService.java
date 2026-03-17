@@ -1,6 +1,6 @@
 package com.autoever.recall.user.service;
 
-import com.autoever.recall.school.domain.SchoolType;
+import com.autoever.recall.school.service.domain.SchoolType;
 import com.autoever.recall.user.service.domain.*;
 import com.autoever.recall.userschool.service.domain.UserSchool;
 

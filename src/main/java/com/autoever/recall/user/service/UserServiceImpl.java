@@ -1,9 +1,9 @@
 package com.autoever.recall.user.service;
 
 import com.autoever.recall.auth.service.SecuritySessionService;
-import com.autoever.recall.school.domain.School;
-import com.autoever.recall.school.domain.SchoolCreateCommand;
-import com.autoever.recall.school.domain.SchoolType;
+import com.autoever.recall.school.service.domain.School;
+import com.autoever.recall.school.service.domain.SchoolCreateCommand;
+import com.autoever.recall.school.service.domain.SchoolType;
 import com.autoever.recall.school.service.SchoolService;
 import com.autoever.recall.user.repository.UserRepository;
 import com.autoever.recall.user.service.domain.*;

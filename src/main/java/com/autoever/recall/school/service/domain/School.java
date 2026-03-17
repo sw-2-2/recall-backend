@@ -1,6 +1,6 @@
-package com.autoever.recall.school.domain;
+package com.autoever.recall.school.service.domain;
 
-import com.autoever.recall.userschool.domain.UserSchool;
+import com.autoever.recall.userschool.service.domain.UserSchool;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;

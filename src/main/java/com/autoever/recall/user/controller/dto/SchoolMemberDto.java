@@ -1,8 +1,8 @@
-package com.autoever.recall.user.dto;
+package com.autoever.recall.user.controller.dto;
 
-import com.autoever.recall.school.domain.School;
-import com.autoever.recall.user.domain.User;
-import com.autoever.recall.userschool.domain.UserSchool;
+import com.autoever.recall.school.service.domain.School;
+import com.autoever.recall.user.service.domain.User;
+import com.autoever.recall.userschool.service.domain.UserSchool;
 
 public record SchoolMemberDto(
         Long id,

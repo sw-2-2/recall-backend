@@ -1,4 +1,4 @@
-package com.autoever.recall.school.dto;
+package com.autoever.recall.school.controller.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

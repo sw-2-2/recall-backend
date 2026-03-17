@@ -1,4 +1,4 @@
-package com.autoever.recall.school.dto;
+package com.autoever.recall.school.controller.dto;
 
 public record SchoolFilterParams(
         String type

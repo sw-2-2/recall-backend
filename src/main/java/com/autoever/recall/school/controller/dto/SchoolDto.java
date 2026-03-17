@@ -1,6 +1,6 @@
-package com.autoever.recall.school.dto;
+package com.autoever.recall.school.controller.dto;
 
-import com.autoever.recall.school.domain.School;
+import com.autoever.recall.school.service.domain.School;
 
 import java.time.LocalDateTime;
 

@@ -1,6 +1,6 @@
 package com.autoever.recall.auth.config;
 
-import com.autoever.recall.user.domain.UserRole;
+import com.autoever.recall.user.service.domain.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

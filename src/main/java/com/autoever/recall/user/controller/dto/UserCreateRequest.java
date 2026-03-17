@@ -1,6 +1,6 @@
-package com.autoever.recall.user.dto;
+package com.autoever.recall.user.controller.dto;
 
-import com.autoever.recall.user.domain.UserCreateCommand;
+import com.autoever.recall.user.service.domain.UserCreateCommand;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

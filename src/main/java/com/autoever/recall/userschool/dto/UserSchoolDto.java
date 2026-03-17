@@ -1,8 +1,8 @@
 package com.autoever.recall.userschool.dto;
 
-import com.autoever.recall.school.domain.School;
-import com.autoever.recall.school.dto.SchoolTypeDto;
-import com.autoever.recall.userschool.domain.UserSchool;
+import com.autoever.recall.school.service.domain.School;
+import com.autoever.recall.school.controller.dto.SchoolTypeDto;
+import com.autoever.recall.userschool.service.domain.UserSchool;
 
 import java.time.LocalDateTime;
 

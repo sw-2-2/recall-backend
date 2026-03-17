@@ -1,8 +1,8 @@
 package com.autoever.recall.school.controller;
 
-import com.autoever.recall.school.domain.School;
-import com.autoever.recall.school.domain.SchoolType;
-import com.autoever.recall.school.dto.*;
+import com.autoever.recall.school.controller.dto.*;
+import com.autoever.recall.school.service.domain.School;
+import com.autoever.recall.school.service.domain.SchoolType;
 import com.autoever.recall.school.service.SchoolService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

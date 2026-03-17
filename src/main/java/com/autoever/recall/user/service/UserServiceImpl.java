@@ -1,17 +1,17 @@
 package com.autoever.recall.user.service;
 
 import com.autoever.recall.auth.service.SecuritySessionService;
-import com.autoever.recall.school.domain.School;
-import com.autoever.recall.school.domain.SchoolCreateCommand;
-import com.autoever.recall.school.domain.SchoolType;
+import com.autoever.recall.school.service.domain.School;
+import com.autoever.recall.school.service.domain.SchoolCreateCommand;
+import com.autoever.recall.school.service.domain.SchoolType;
 import com.autoever.recall.school.service.SchoolService;
-import com.autoever.recall.user.domain.*;
 import com.autoever.recall.user.repository.UserRepository;
+import com.autoever.recall.user.service.domain.*;
 import com.autoever.recall.user.service.exception.DuplicateEmailException;
 import com.autoever.recall.user.service.exception.UserNotFoundException;
 import com.autoever.recall.user.service.exception.UserSchoolAlreadyExistsException;
 import com.autoever.recall.user.service.exception.*;
-import com.autoever.recall.userschool.domain.UserSchool;
+import com.autoever.recall.userschool.service.domain.UserSchool;
 import com.autoever.recall.userschool.service.UserSchoolService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User updateUser(UserUpdateCommand command) {
         User user = getUser();
-        user.update(command);
+        user.updateProfile(command);
         return user;
     }
 

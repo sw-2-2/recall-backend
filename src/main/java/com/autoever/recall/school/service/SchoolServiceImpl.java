@@ -1,8 +1,8 @@
 package com.autoever.recall.school.service;
 
-import com.autoever.recall.school.domain.School;
-import com.autoever.recall.school.domain.SchoolCreateCommand;
-import com.autoever.recall.school.domain.SchoolType;
+import com.autoever.recall.school.service.domain.School;
+import com.autoever.recall.school.service.domain.SchoolCreateCommand;
+import com.autoever.recall.school.service.domain.SchoolType;
 import com.autoever.recall.school.repository.SchoolRepository;
 import com.autoever.recall.school.service.exception.SchoolNotFoundException;
 import lombok.RequiredArgsConstructor;

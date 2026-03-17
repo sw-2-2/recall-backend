@@ -3,9 +3,9 @@ package com.autoever.recall.user.controller;
 
 import com.autoever.recall.school.domain.SchoolType;
 import com.autoever.recall.school.dto.SchoolTypeDto;
-import com.autoever.recall.user.domain.*;
-import com.autoever.recall.user.dto.*;
+import com.autoever.recall.user.controller.dto.*;
 import com.autoever.recall.user.service.UserService;
+import com.autoever.recall.user.service.domain.*;
 import com.autoever.recall.userschool.dto.UserSchoolDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

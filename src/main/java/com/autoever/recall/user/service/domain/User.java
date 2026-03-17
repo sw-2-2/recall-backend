@@ -1,6 +1,5 @@
-package com.autoever.recall.user.domain;
+package com.autoever.recall.user.service.domain;
 
-import com.autoever.recall.school.domain.SchoolType;
 import com.autoever.recall.userschool.domain.UserSchool;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -57,16 +56,10 @@ public class User {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public void update(UserUpdateCommand command) {
+    public void updateProfile(UserUpdateCommand command) {
         this.name = command.name();
         this.phone = command.phone();
         this.address = command.address();
-    }
-
-    public boolean hasSchoolType(SchoolType type) {
-        return userSchools.stream()
-                .map(UserSchool::getSchool)
-                .anyMatch(it -> it.getType().equals(type));
     }
 
     public void addUserSchool(UserSchool userSchool) {

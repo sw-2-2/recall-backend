@@ -1,7 +1,7 @@
 package com.autoever.recall.userschool.domain;
 
 import com.autoever.recall.school.domain.School;
-import com.autoever.recall.user.domain.User;
+import com.autoever.recall.user.service.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;

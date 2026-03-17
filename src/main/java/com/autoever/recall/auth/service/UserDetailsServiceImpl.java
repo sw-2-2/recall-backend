@@ -1,7 +1,7 @@
 package com.autoever.recall.auth.service;
 
 import com.autoever.recall.auth.service.domain.SessionUserDetails;
-import com.autoever.recall.user.domain.User;
+import com.autoever.recall.user.service.domain.User;
 import com.autoever.recall.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;

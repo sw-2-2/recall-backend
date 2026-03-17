@@ -1,7 +1,7 @@
-package com.autoever.recall.user.dto;
+package com.autoever.recall.user.controller.dto;
 
 import com.autoever.recall.school.dto.SchoolTypeDto;
-import com.autoever.recall.user.domain.UserSchoolCreateCommand;
+import com.autoever.recall.user.service.domain.UserSchoolCreateCommand;
 import jakarta.validation.constraints.*;
 
 public record UserSchoolCreateRequest(

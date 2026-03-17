@@ -1,6 +1,6 @@
-package com.autoever.recall.user.dto;
+package com.autoever.recall.user.controller.dto;
 
-import com.autoever.recall.user.domain.User;
+import com.autoever.recall.user.service.domain.User;
 
 import java.time.LocalDateTime;
 

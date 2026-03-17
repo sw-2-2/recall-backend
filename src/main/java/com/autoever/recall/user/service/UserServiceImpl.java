@@ -5,8 +5,8 @@ import com.autoever.recall.school.domain.School;
 import com.autoever.recall.school.domain.SchoolCreateCommand;
 import com.autoever.recall.school.domain.SchoolType;
 import com.autoever.recall.school.service.SchoolService;
-import com.autoever.recall.user.domain.*;
 import com.autoever.recall.user.repository.UserRepository;
+import com.autoever.recall.user.service.domain.*;
 import com.autoever.recall.user.service.exception.DuplicateEmailException;
 import com.autoever.recall.user.service.exception.UserNotFoundException;
 import com.autoever.recall.user.service.exception.UserSchoolAlreadyExistsException;
@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User updateUser(UserUpdateCommand command) {
         User user = getUser();
-        user.update(command);
+        user.updateProfile(command);
         return user;
     }
 

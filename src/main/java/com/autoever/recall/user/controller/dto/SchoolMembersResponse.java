@@ -1,4 +1,4 @@
-package com.autoever.recall.user.dto;
+package com.autoever.recall.user.controller.dto;
 
 import java.util.List;
 

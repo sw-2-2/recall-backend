@@ -1,7 +1,7 @@
 package com.autoever.recall.userschool.repository;
 
 import com.autoever.recall.school.domain.SchoolType;
-import com.autoever.recall.userschool.domain.UserSchool;
+import com.autoever.recall.userschool.service.domain.UserSchool;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

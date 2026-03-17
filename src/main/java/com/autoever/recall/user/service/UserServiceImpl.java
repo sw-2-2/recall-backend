@@ -11,7 +11,7 @@ import com.autoever.recall.user.service.exception.DuplicateEmailException;
 import com.autoever.recall.user.service.exception.UserNotFoundException;
 import com.autoever.recall.user.service.exception.UserSchoolAlreadyExistsException;
 import com.autoever.recall.user.service.exception.*;
-import com.autoever.recall.userschool.domain.UserSchool;
+import com.autoever.recall.userschool.service.domain.UserSchool;
 import com.autoever.recall.userschool.service.UserSchoolService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

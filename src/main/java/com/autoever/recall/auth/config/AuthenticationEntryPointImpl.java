@@ -2,7 +2,6 @@ package com.autoever.recall.auth.config;
 
 import com.autoever.recall.auth.service.exception.UnAuthorizedException;
 import com.autoever.recall.global.exception.ErrorResponse;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +25,7 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
             @NonNull AuthenticationException authException
-    ) throws IOException, ServletException {
+    ) throws IOException {
         SecurityContextHolder.clearContext();
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
